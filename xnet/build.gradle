@@ -1,0 +1,116 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.novoda.bintray-release'
+android {
+    compileSdkVersion 27
+
+
+
+    defaultConfig {
+        minSdkVersion 21
+        //noinspection OldTargetApi
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+
+
+
+
+    lintOptions {
+        abortOnError false
+        checkReleaseBuilds false
+        warningsAsErrors false
+        disable 'GoogleAppIndexingWarning'
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+//noinspection SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    //okhttp
+    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
+    //retrofit
+    api 'com.squareup.retrofit2:retrofit:2.4.0'
+    //Retrofit提供的Converter
+    //gson converter
+    implementation 'com.squareup.retrofit2:converter-gson:2.0.2'
+    //jackson converter
+    //    implementation 'com.squareup.retrofit2:converter-jackson:2.0.2'
+    //Moshi converter
+    //    implementation 'com.squareup.retrofit2:converter-moshi:2.0.2'
+    //Protobuf
+    //    implementation 'com.squareup.retrofit2:converter-protobuf:2.0.2'
+    //Wire
+    //    implementation 'com.squareup.retrofit2:converter-wire:2.0.2'
+    //Simple XML
+    //    implementation 'com.squareup.retrofit2:converter-simplexml:2.0.2'
+    //Scalars
+    //    implementation 'com.squareup.retrofit2:converter-scalars:2.0.2'
+    //Retrofit提供的CallAdapter：
+    //rxjava
+    implementation 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
+    //RxJava
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.8'
+    //guava
+    implementation 'com.squareup.retrofit2:adapter-guava:2.0.2'
+    //java8
+    implementation 'com.squareup.retrofit2:adapter-java8:2.4.0'
+    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'com.android.volley:volley:1.1.0'
+
+
+    //okhttp3 logging
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.5.0'
+}
+
+
+allprojects {
+    repositories {
+        jcenter()
+    }
+    tasks.withType(Javadoc) {
+        options {
+            encoding "UTF-8"
+            charSet 'UTF-8'
+            links "http://docs.oracle.com/javase/7/docs/api"
+        }
+    }
+}
+//添加
+//noinspection SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection
+publish {
+//    repoName = 'Android'           //bintray仓库名
+    userOrg = 'itxiaox'//bintray.com用户名 -bintray注册的用户名
+    groupId = 'com.itxiaox'//jcenter上的路径 compile引用时的第1部分groupId
+    artifactId = 'xnet'//项目名称  compile引用时的第2部分项目名
+    publishVersion = '0.1.2'// compile引用时的第3部分版本号
+//    desc = '增加builder模式构建'
+    website = 'https://github.com/itxiaox/XNet'//网站，不重要；尽量模拟github上的地址，例如我这样的；当然你有地址最好了
+
+    //上传命令
+    //gradlew clean build bintrayUpload  -PbintrayUser=itxiaox -PbintrayKey=c158d4fea06de14df4ef28d6a479a56474c709d6 -PdryRun=false
+
+
+    //clean build generatePomFileForReleasePublication releaseAndroidJavadocs releaseAndroidJavadocsJar releaseAndroidSourcesJar publishReleasePublicationToMavenLocal
+    //bintrayUpload -PbintrayUser=bintray user -PbintrayKey=c158d4fea06de14df4ef28d6a479a56474c709d6 -PdryRun=false
+}
