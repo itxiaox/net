@@ -23,6 +23,7 @@ gradle 引用
  
     
      //初始一次，一般可以采用在Application的onCreate中进行调用
+     
         RetrofitManager.init(baseUrl);
         //具体发送请求的
         wxapiService = RetrofitManager.getWebService(WXAPIService.class);`
@@ -30,6 +31,7 @@ gradle 引用
     
     
 -   灵活配置, 可以使用默认的retrofit/okhttpclient, 也可以重新自己创建，
+
         OkHttpClient client = RetrofitManager.defaultClient().build();
         wxapiService = new Retrofit.Builder()
                 .baseUrl(baseUrl)
