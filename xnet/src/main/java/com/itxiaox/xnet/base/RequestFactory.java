@@ -1,5 +1,6 @@
 package com.itxiaox.xnet.base;
 
+import com.itxiaox.xnet.okhttp.OkHttpRequestManager;
 import com.itxiaox.xnet.volley.VolleyRequestManager;
 
 /**
@@ -11,8 +12,8 @@ import com.itxiaox.xnet.volley.VolleyRequestManager;
 public class RequestFactory {
 
     public static IRequestManager getRequestManager() {
-//        return OkHttpRequestManager.getInstance();
-        return VolleyRequestManager.getInstance();
+        return OkHttpRequestManager.getInstance();
+//        return VolleyRequestManager.getInstance();
     }
 
 }

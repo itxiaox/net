@@ -27,10 +27,10 @@ import okio.Buffer;
  */
 public class BasicParamsInterceptor implements Interceptor {
 
-    Map<String, String> queryParamsMap = new HashMap<>();
-    Map<String, String> paramsMap = new HashMap<>();
-    Map<String, String> headerParamsMap = new HashMap<>();
-    List<String> headerLinesList = new ArrayList<>();
+    private Map<String, String> queryParamsMap = new HashMap<>();
+    private Map<String, String> paramsMap = new HashMap<>();
+    private Map<String, String> headerParamsMap = new HashMap<>();
+    private List<String> headerLinesList = new ArrayList<>();
 
     private BasicParamsInterceptor() {
 

@@ -54,11 +54,11 @@ public class OkHttpRequestManager implements IRequestManager {
         builder.retryOnConnectionFailure(true);//错误重连
 
         // 添加公共参数拦截器
-        BasicParamsInterceptor basicParamsInterceptor = new BasicParamsInterceptor.Builder()
-                .addHeaderParam("userName", "")//添加公共参数
-                .addHeaderParam("device", "")
-                .build();
-        builder.addInterceptor(basicParamsInterceptor);
+//        BasicParamsInterceptor basicParamsInterceptor = new BasicParamsInterceptor.Builder()
+//                .addHeaderParam("userName", "")//添加公共参数
+//                .addHeaderParam("device", "")
+//                .build();
+//        builder.addInterceptor(basicParamsInterceptor);
 
         //项目中设置头信息
         Interceptor headerInterceptor = new Interceptor() {
@@ -75,7 +75,7 @@ public class OkHttpRequestManager implements IRequestManager {
                 return chain.proceed(request);
             }
         };
-        builder.addInterceptor(headerInterceptor);
+//        builder.addInterceptor(headerInterceptor);
 
         okHttpClient = builder
                 .build();

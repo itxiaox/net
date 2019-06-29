@@ -1,0 +1,32 @@
+apply plugin: 'java-library'
+apply plugin: 'com.novoda.bintray-release'
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    //retrofit
+    api 'com.squareup.retrofit2:retrofit:2.4.0'
+    //okhttp3 logging
+    api 'com.squareup.okhttp3:logging-interceptor:3.5.0'
+    //gson converter
+    api 'com.squareup.retrofit2:converter-gson:2.0.2'
+}
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+sourceCompatibility = "8"
+targetCompatibility = "8"
+//添加
+//noinspection SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection
+publish {
+//    repoName = 'Android'           //bintray仓库名
+    userOrg = 'itxiaox'//bintray.com用户名 -bintray注册的用户名
+    groupId = 'com.itxiaox'//jcenter上的路径 compile引用时的第1部分groupId
+    artifactId = 'retrofit'//项目名称  compile引用时的第2部分项目名
+    publishVersion = '0.1.0'// compile引用时的第3部分版本号
+//    desc = '增加builder模式构建'
+    website = 'https://github.com/itxiaox/XNet'//网站，不重要；尽量模拟github上的地址，例如我这样的；当然你有地址最好了
+    //上传命令
+    //gradlew clean build bintrayUpload  -PbintrayUser=itxiaox -PbintrayKey=c158d4fea06de14df4ef28d6a479a56474c709d6 -PdryRun=false
+
+    //clean build generatePomFileForReleasePublication releaseAndroidJavadocs releaseAndroidJavadocsJar releaseAndroidSourcesJar publishReleasePublicationToMavenLocal
+    //bintrayUpload -PbintrayUser=bintray user -PbintrayKey=c158d4fea06de14df4ef28d6a479a56474c709d6 -PdryRun=false
+}

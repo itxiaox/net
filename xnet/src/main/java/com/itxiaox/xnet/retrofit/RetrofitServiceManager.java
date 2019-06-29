@@ -2,14 +2,10 @@ package com.itxiaox.xnet.retrofit;
 
 import android.annotation.SuppressLint;
 
-import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
 import java.util.concurrent.TimeUnit;
-
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
-
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -20,7 +16,6 @@ public class RetrofitServiceManager {
     private   int timeout;//超时时间
     private   int readeTimeOut;
     private Retrofit mRetrofit;
-
 
     public static class Builder{
          String baseUrl = "https://api.weixin.qq.com/";
@@ -65,6 +60,7 @@ public class RetrofitServiceManager {
 
     public Retrofit getRetrofit(){
         if (mRetrofit==null){
+            if(baseUrl==null||baseUrl.equals(""))throw new NullPointerException("baseUrl is Null");
             mRetrofit = new Retrofit.Builder()
                     .client(getDefaultClient())
 //                  .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
@@ -84,6 +80,7 @@ public class RetrofitServiceManager {
     }
 
     public OkHttpClient  getDefaultClient(){
+
         if(builder==null){
             builder = new OkHttpClient.Builder();
             builder.connectTimeout(timeout, TimeUnit.SECONDS);
@@ -146,11 +143,6 @@ public class RetrofitServiceManager {
      * @return WebService api接口
      */
     public <T> T create(Class<T> service) {
-//        test(getWebService().getUser());
         return getRetrofit().create(service);
     }
-//    public WebService getWebService() {
-//        return RetrofitServiceManager.getInstance().create(WebService.class);
-//    }
-
 }

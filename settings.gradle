@@ -1,1 +1,3 @@
-include ':app',":xnet"
+include ':app'
+include ':retrofit'
+include ':xnet'

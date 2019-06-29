@@ -32,7 +32,6 @@ import static org.junit.Assert.*;
 @RunWith(AndroidJUnit4.class)
 public class ExampleInstrumentedTest {
     private static final String TAG = "ExampleInstrumentedTest";
-    TestApiService service;
     String APP_ID = "wx880db3ff4529e9aa";
     String AppSecret = "b989124f9c581d12f76100da5f5064e2";
     @Test
@@ -62,30 +61,30 @@ public class ExampleInstrumentedTest {
         });
     }
 
-        @Test
-        public void  tetGetToken(){
-            service = new RetrofitServiceManager.Builder()
-                    .baseUrl("https://api.weixin.qq.com/")
-                    .builder()
-                    .create(TestApiService.class);
-            Call<ResponseBody> call = service.getAccess_token("client_credential",APP_ID,AppSecret);
-
-            call.enqueue(new Callback<ResponseBody>() {
-                @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    try {
-                        Log.i(TAG, "onResponse: "+response.body().string());
-                        System.out.println("onResponse: "+response.body().string());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    System.out.println("onResponse: "+t);
-                }
-            });
-
-        }
+//        @Test
+//        public void  tetGetToken(){
+//            service = new RetrofitServiceManager.Builder()
+//                    .baseUrl("https://api.weixin.qq.com/")
+//                    .builder()
+//                    .create(TestApiService.class);
+//            Call<ResponseBody> call = service.getAccess_token("client_credential",APP_ID,AppSecret);
+//
+//            call.enqueue(new Callback<ResponseBody>() {
+//                @Override
+//                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+//                    try {
+//                        Log.i(TAG, "onResponse: "+response.body().string());
+//                        System.out.println("onResponse: "+response.body().string());
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//
+//                @Override
+//                public void onFailure(Call<ResponseBody> call, Throwable t) {
+//                    System.out.println("onResponse: "+t);
+//                }
+//            });
+//
+//        }
 }
