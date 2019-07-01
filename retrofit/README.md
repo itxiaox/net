@@ -19,38 +19,30 @@ gradle 引用
 
 代码中使用：
 
- - 默认简单调用方式
+ - 在一般情况下，采用简单的默认配置即可
  
-    
-     //初始一次，一般可以采用在Application的onCreate中进行调用
-        RetrofitManager.init(baseUrl);
-        //具体发送请求的
-        wxapiService = RetrofitManager.getWebService(WXAPIService.class);`
-        wxapiService.getWXArticle().enqueue(...)``
-    
-    
--   灵活配置, 可以使用默认的retrofit/okhttpclient, 也可以重新自己创建，
-        OkHttpClient client = RetrofitManager.defaultClient().build();
-        wxapiService = new Retrofit.Builder()
-                .baseUrl(baseUrl)
-                .client(client)
-                .addConverterFactory(GsonConverterFactory.create()) .build()
-                .create(WXAPIService.class);
-        wxapiService.getWXArticle().enqueue(...)``
-        
+```
+ //初始一次，一般可以采用在Application的onCreate中进行调用
+ HttpManager.init(baseUrl,true)
+//具体发送请求的
+ wxapiService = HttpManager.create(WXAPIService.class);`
+ wxapiService.getWXArticle().enqueue(...)``
+```
 
-        //全部灵活配置
-          OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
-          clientBuilder.connectTimeout(30, TimeUnit.SECONDS);
-          HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor(new       HttpLog());
-          logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-          clientBuilder.addNetworkInterceptor(logInterceptor);
-          wxapiService = new Retrofit.Builder().baseUrl(baseUrl)
-                        .client(clientBuilder.build())
-        //                .addConverterFactory(GsonConverterFactory.create())
-          .build().create(WXAPIService.class);
-		 
-		 
+- 但如果需要重新设置timeout,interceptor，convertAdapter等，可以自己重新配置HttpConfig。
+
+```
+//初始一次，一般可以采用在Application的onCreate中进行调用
+HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor(new HttpLog());
+logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+HttpConfig httpConfig = new HttpConfig.Builder()
+  .baseUrl(baseUrl).addInterceptor(logInterceptor)
+  .addConverterFactory(GsonConverterFactory.create())
+  .build();
+HttpManager.init(httpConfig);
+```
+
+
  # LICENSE
 
     Copyright 2018 Xiaox

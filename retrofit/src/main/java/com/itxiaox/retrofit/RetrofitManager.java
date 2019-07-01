@@ -15,7 +15,10 @@ import retrofit2.Converter;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+@Deprecated
 public class RetrofitManager {
+
+
     private  static Retrofit.Builder builder;
     private  static OkHttpClient.Builder client;
     private static final int TIMEOUT = 30;//默认超声时间

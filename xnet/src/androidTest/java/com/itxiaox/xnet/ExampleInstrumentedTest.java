@@ -3,24 +3,11 @@ package com.itxiaox.xnet;
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
-import android.util.Log;
-
 import com.itxiaox.xnet.base.IRequestCallback;
 import com.itxiaox.xnet.base.IRequestManager;
 import com.itxiaox.xnet.base.RequestFactory;
-import com.itxiaox.xnet.retrofit.RetrofitServiceManager;
-import com.itxiaox.xnet.test.TestApiService;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import java.io.IOException;
-
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 import static org.junit.Assert.*;
 
 /**

@@ -31,9 +31,9 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
-//    implementation project(":retrofit")
-    implementation project(":xnet")
-    implementation 'com.itxiaox:retrofit:0.1.0'
+    implementation project(":retrofit")
+//    implementation project(":xnet")
+//    implementation 'com.itxiaox:retrofit:0.1.0'
 //    //gson converter
 //    implementation 'com.squareup.retrofit2:converter-gson:2.0.2'
 //    //okhttp3 logging

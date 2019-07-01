@@ -3,6 +3,8 @@ package com.itxiaox.xnet.okhttp;
 
 import android.content.Context;
 import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 
 import com.itxiaox.xnet.base.IRequestCallback;
 import com.itxiaox.xnet.base.IRequestManager;
@@ -21,13 +23,18 @@ import okhttp3.Response;
 
 
 public class OkHttpRequestManager implements IRequestManager {
-
     private static final int DEFAULT_TIME_OUT = 30000;
-
     private String token = "token";
     public static final MediaType TYPE_JSON = MediaType.parse("application/json; charset=utf-8");
     private OkHttpClient okHttpClient;
-    private Handler handler;
+    private Handler handler= new Handler(Looper.getMainLooper()){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+
+
+        }
+    };
 
     public static OkHttpRequestManager getInstance() {
         return SingletonHolder.INSTANCE;
@@ -44,22 +51,17 @@ public class OkHttpRequestManager implements IRequestManager {
 
     @Override
     public void init(Context context) {
-
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
-
-
         builder.connectTimeout(DEFAULT_TIME_OUT, TimeUnit.SECONDS);//连接 超时时间
         builder.writeTimeout(DEFAULT_TIME_OUT, TimeUnit.SECONDS);//写操作 超时时间
         builder.readTimeout(DEFAULT_TIME_OUT, TimeUnit.SECONDS);//读操作 超时时间
         builder.retryOnConnectionFailure(true);//错误重连
-
         // 添加公共参数拦截器
 //        BasicParamsInterceptor basicParamsInterceptor = new BasicParamsInterceptor.Builder()
 //                .addHeaderParam("userName", "")//添加公共参数
 //                .addHeaderParam("device", "")
 //                .build();
 //        builder.addInterceptor(basicParamsInterceptor);
-
         //项目中设置头信息
         Interceptor headerInterceptor = new Interceptor() {
             @Override
@@ -77,12 +79,9 @@ public class OkHttpRequestManager implements IRequestManager {
         };
 //        builder.addInterceptor(headerInterceptor);
 
-        okHttpClient = builder
-                .build();
-        //在哪个线程创建该对象，则最后的请求结果将在该线程回调
-        handler = new Handler();
-    }
+        okHttpClient = builder.build();
 
+    }
     @Override
     public void get(String url, IRequestCallback requestCallback) {
         Request request = new Request.Builder()
@@ -133,7 +132,6 @@ public class OkHttpRequestManager implements IRequestManager {
                         requestCallback.onFailure(e);
                     }
                 });
-
             }
 
             @Override
