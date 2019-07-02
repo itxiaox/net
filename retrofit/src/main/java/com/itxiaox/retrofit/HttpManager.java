@@ -9,14 +9,19 @@ import retrofit2.CallAdapter;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
 
+/**
+ * HttpManager Http请求管理类
+ */
 public class HttpManager {
 
     private static HttpManager instance;
 
-    HttpConfig httpConfig;
+    private HttpConfig httpConfig;
+    private Retrofit retrofit;
 
     private HttpManager(HttpConfig config){
         this.httpConfig = config;
+        this.retrofit = newRetrofit();
     }
 
 
@@ -31,7 +36,7 @@ public class HttpManager {
 
 
     /**
-     * 日志
+     * 自定义配置
      * @param config 自定义配置
      */
     public static void init(HttpConfig config){
@@ -48,7 +53,7 @@ public class HttpManager {
         if (instance == null){
             throw new  NullPointerException("HttpManager not init");
         }
-        return instance.newRetrofit().create(service);
+        return instance.retrofit.create(service);
     }
 
     private Retrofit newRetrofit(){

@@ -29,9 +29,8 @@ public class HttpConfig {
     public static HttpConfig createDefault(String baseUrl, boolean logger) {
         Builder builder = new Builder();
         if (logger) {
-            HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor(new HttpLog());
-            logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-            builder.addInterceptor(logInterceptor);
+            builder.addInterceptor(new HttpLoggingInterceptor()
+                    .setLevel(HttpLoggingInterceptor.Level.BODY));
         }
         return builder.baseUrl(baseUrl)
                 .connectTimeoutMilliseconds(DEFAULT_CONNECT_TIMEOUT)
@@ -82,9 +81,9 @@ public class HttpConfig {
     private HttpConfig(Builder builder) {
         baseUrl = builder.baseUrl;
         connectTimeoutMilliseconds = builder.connectTimeoutMilliseconds;
-        interceptors = builder.interceptors;
-        converterFactories = builder.converterFactories;
-        adapterFactories = builder.adapterFactories;
+        interceptors = new ArrayList<>(builder.interceptors);
+        converterFactories = new ArrayList<>(builder.converterFactories);
+        adapterFactories = new ArrayList<>( builder.adapterFactories);
     }
 
     /**

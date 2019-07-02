@@ -1,4 +1,6 @@
 # Retrofit封装库
+[ ![Download](https://api.bintray.com/packages/itxiaox/maven/retrofit/images/download.svg?version=0.5.0) ](https://bintray.com/itxiaox/maven/retrofit/0.5.0/link)
+
     对retrofit 进行封装 ，在项目更加简单易用
 
 # 使用方法
@@ -13,9 +15,9 @@ gradle 引用
             }
         }
     }
-    在module 中添加依赖
 
-    implementation 'com.itxiaox:retrofit:0.1.0'
+    //在module 中添加依赖
+    implementation 'com.itxiaox:retrofit:0.5.0'
 
 代码中使用：
 
@@ -33,13 +35,30 @@ gradle 引用
 
 ```
 //初始一次，一般可以采用在Application的onCreate中进行调用
-HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor(new HttpLog());
+
+//添加日志拦截器
+HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
+    @Override
+  public void log(String message) {
+        Log.d(TAG, "log:"+message); //在这里可以统一对请求的各项参数进行处理，
+  }
+});
 logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+//需要在headers中统一添加共用参数
+HeadersInterceptor headersInterceptor = new HeadersInterceptor.Builder()
+              .addHeaderParam("Content-Type","")
+              .addHeaderParam("Accept","application/json")
+               .build();
+//配置htpp请求
 HttpConfig httpConfig = new HttpConfig.Builder()
-  .baseUrl(baseUrl).addInterceptor(logInterceptor)
+  .baseUrl(baseUrl)
+  .addInterceptor(headersInterceptor)
+  .addInterceptor(logInterceptor)
   .addConverterFactory(GsonConverterFactory.create())
   .build();
-HttpManager.init(httpConfig);
+ //初始化
+ HttpManager.init(httpConfig);
 ```
 
 

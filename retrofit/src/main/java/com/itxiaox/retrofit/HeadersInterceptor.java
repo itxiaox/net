@@ -14,9 +14,9 @@ import okhttp3.Response;
  *
  * 向请求头里添加公共参数
  */
-public class HttpCommonInterceptor implements Interceptor {
+public class HeadersInterceptor implements Interceptor {
     private Map<String,String> mHeaderParamsMap = new HashMap<>();
-    public HttpCommonInterceptor() {
+    public HeadersInterceptor() {
     }
     @Override
     public Response intercept(Chain chain) throws IOException {
@@ -41,9 +41,9 @@ public class HttpCommonInterceptor implements Interceptor {
     }
 
     public static class Builder{
-        HttpCommonInterceptor mHttpCommonInterceptor;
+        HeadersInterceptor mHttpCommonInterceptor;
         public Builder(){
-            mHttpCommonInterceptor = new HttpCommonInterceptor();
+            mHttpCommonInterceptor = new HeadersInterceptor();
         }
 
         public Builder addHeaderParam(String key, String value){
@@ -67,7 +67,7 @@ public class HttpCommonInterceptor implements Interceptor {
             return addHeaderParam(key, String.valueOf(value));
         }
 
-        public HttpCommonInterceptor build(){
+        public HeadersInterceptor build(){
             return mHttpCommonInterceptor;
         }
 

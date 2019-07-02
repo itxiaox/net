@@ -21,7 +21,7 @@ publish {
     userOrg = 'itxiaox'//bintray.com用户名 -bintray注册的用户名
     groupId = 'com.itxiaox'//jcenter上的路径 compile引用时的第1部分groupId
     artifactId = 'retrofit'//项目名称  compile引用时的第2部分项目名
-    publishVersion = '0.1.0'// compile引用时的第3部分版本号
+    publishVersion = '0.5.0'// compile引用时的第3部分版本号
 //    desc = '增加builder模式构建'
     website = 'https://github.com/itxiaox/XNet'//网站，不重要；尽量模拟github上的地址，例如我这样的；当然你有地址最好了
     //上传命令
