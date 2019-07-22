@@ -69,6 +69,9 @@ dependencies {
     implementation 'com.squareup.retrofit2:adapter-java8:2.4.0'
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.android.volley:volley:1.1.0'
+    implementation 'com.orhanobut:logger:2.2.0'
+
+    implementation 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
 }
 
 

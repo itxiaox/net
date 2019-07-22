@@ -1,7 +1,6 @@
 package com.itxiaox.xnet.base;
 
-import com.itxiaox.xnet.okhttp.OkHttpRequestManager;
-import com.itxiaox.xnet.volley.VolleyRequestManager;
+import com.itxiaox.xnet.retrofit.RetrofitManager;
 
 /**
  * 该类的作用是用于返回一个IRequestManager对象，这个IRequestManager的实现类
@@ -12,7 +11,7 @@ import com.itxiaox.xnet.volley.VolleyRequestManager;
 public class RequestFactory {
 
     public static IRequestManager getRequestManager() {
-        return OkHttpRequestManager.getInstance();
+        return RetrofitManager.getInstance();
 //        return VolleyRequestManager.getInstance();
     }
 

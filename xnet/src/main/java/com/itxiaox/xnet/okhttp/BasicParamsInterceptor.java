@@ -42,7 +42,7 @@ public class BasicParamsInterceptor implements Interceptor {
         Request request = chain.request();
         Request.Builder requestBuilder = request.newBuilder();
 
-        // process header params inject
+        // process header param inject
         Headers.Builder headerBuilder = request.headers().newBuilder();
         if (headerParamsMap.size() > 0) {
             Iterator iterator = headerParamsMap.entrySet().iterator();
@@ -58,7 +58,7 @@ public class BasicParamsInterceptor implements Interceptor {
             }
             requestBuilder.headers(headerBuilder.build());
         }
-        // process header params end
+        // process header param end
 
 
         // process queryParams inject whatever it's GET or POST
@@ -132,7 +132,7 @@ public class BasicParamsInterceptor implements Interceptor {
         return true;
     }
 
-    // func to inject params into url
+    // func to inject param into url
     private Request injectParamsIntoUrl(HttpUrl.Builder httpUrlBuilder, Request.Builder requestBuilder, Map<String, String> paramsMap) {
         if (paramsMap.size() > 0) {
             Iterator iterator = paramsMap.entrySet().iterator();

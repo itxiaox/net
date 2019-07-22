@@ -8,6 +8,9 @@ dependencies {
     api 'com.squareup.okhttp3:logging-interceptor:3.5.0'
     //gson converter
     api 'com.squareup.retrofit2:converter-gson:2.0.2'
+
+    compile 'com.github.franmontiel:PersistentCookieJar:1.0.1'
+
 }
 tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"

@@ -3,11 +3,26 @@ package com.itxiaox.xnet;
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
+import android.util.Log;
+
 import com.itxiaox.xnet.base.IRequestCallback;
 import com.itxiaox.xnet.base.IRequestManager;
+import com.itxiaox.xnet.base.RequestBody;
 import com.itxiaox.xnet.base.RequestFactory;
+import com.itxiaox.xnet.utils.Utils;
+import com.orhanobut.logger.Logger;
+
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.io.IOException;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 import static org.junit.Assert.*;
 
 /**
@@ -21,57 +36,65 @@ public class ExampleInstrumentedTest {
     private static final String TAG = "ExampleInstrumentedTest";
     String APP_ID = "wx880db3ff4529e9aa";
     String AppSecret = "b989124f9c581d12f76100da5f5064e2";
-    @Test
+    Context appContext;
+    @Before
     public void useAppContext() {
         // Context of the app under test.
-        Context appContext = InstrumentationRegistry.getTargetContext();
-
-        assertEquals("com.xiao.base.xnet.test", appContext.getPackageName());
+        appContext = InstrumentationRegistry.getTargetContext();
+        Utils.init(appContext);
+        String baseUrl = "https://www.wanandroid.com";
+        IRequestManager iRequestManager = RequestFactory. getRequestManager();
+        iRequestManager.init(appContext,baseUrl);
     }
 
+    /**
+     * 测试retrofit 封装，Get请求，https请求
+     */
     @Test
-    public void testRequest(){
+    public void testRetrofitGet(){
         IRequestManager iRequestManager = RequestFactory. getRequestManager();
-        iRequestManager.init(InstrumentationRegistry.getTargetContext());
-
-        String url = "http://www.wanandroid.com/tools/mockapi/9932/getUser";
-        iRequestManager.get(url, new IRequestCallback() {
+        String url = "/wxarticle/chapters/json/";
+//        String url = "http://www.wanandroid.com/tools/mockapi/9932/getUser";
+        iRequestManager.get(url, null, new IRequestCallback<String>() {
             @Override
             public void onSuccess(String response) {
-                System.out.println("response="+response);
+                Log.i(TAG, "onSuccess: "+response);
             }
 
             @Override
-            public void onFailure(Throwable throwable) {
-                System.out.println("throwable="+throwable);
+            public void onFailure(int errcode, String errmsg) {
+                Log.i(TAG, "onFailure: "+errmsg);
             }
         });
     }
 
-//        @Test
-//        public void  tetGetToken(){
-//            service = new RetrofitServiceManager.Builder()
-//                    .baseUrl("https://api.weixin.qq.com/")
-//                    .builder()
-//                    .create(TestApiService.class);
-//            Call<ResponseBody> call = service.getAccess_token("client_credential",APP_ID,AppSecret);
-//
-//            call.enqueue(new Callback<ResponseBody>() {
-//                @Override
-//                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-//                    try {
-//                        Log.i(TAG, "onResponse: "+response.body().string());
-//                        System.out.println("onResponse: "+response.body().string());
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//
-//                @Override
-//                public void onFailure(Call<ResponseBody> call, Throwable t) {
-//                    System.out.println("onResponse: "+t);
-//                }
-//            });
-//
-//        }
+    @Test
+    public void testRetrofitPost(){
+        IRequestManager iRequestManager = RequestFactory. getRequestManager();
+        String url = "/user/login";
+
+
+        RequestBody paramBody = new RequestBody();
+        paramBody.addParams("username","itxiaox");
+        paramBody.addParams("password","xiao10034263");
+
+        iRequestManager.post(url, paramBody, new IRequestCallback<String>() {
+            @Override
+            public void onSuccess(String response) {
+                Log.i(TAG, "onSuccess: "+response);
+            }
+
+            @Override
+            public void onFailure(int errcode, String errmsg) {
+                Log.i(TAG, "onFailure: "+errmsg);
+            }
+        });
+    }
+
+
+
+
+
+
+
 }

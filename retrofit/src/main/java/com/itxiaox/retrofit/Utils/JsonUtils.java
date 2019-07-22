@@ -1,8 +1,20 @@
 package com.itxiaox.retrofit.Utils;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+
 @SuppressWarnings("SpellCheckingInspection")
 public class JsonUtils {
 
+    public static boolean isJson(String content){
+        Gson gson = new Gson();
+        try {
+            gson.fromJson(content, Object.class);
+            return true;
+        } catch(JsonSyntaxException ex) {
+            return false;
+        }
+    }
     /**
      * 格式化json字符串
      *

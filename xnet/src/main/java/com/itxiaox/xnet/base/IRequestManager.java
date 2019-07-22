@@ -14,11 +14,18 @@ public interface IRequestManager {
      * 初始化的一些配置,全局配置，在Application中配置
      * @param context 上下文对象
      */
-    void init(Context context);
+    void init(Context context,String baseUrl);
 
-    void get(String url, IRequestCallback requestCallback);
+    /**
+     *
+     * @param url 是除去baseUrl之外的部分
+     * @param paramBody
+     * @param requestCallback
+     * @param <T>
+     */
+    <T> void  get(String url, RequestBody paramBody, IRequestCallback<T> requestCallback);
 
-    void post(String url, String requestBodyJson, IRequestCallback requestCallback);
+    <T>  void post(String url, RequestBody paramBody, IRequestCallback<T> requestCallback);
 
     void put(String url, String requestBodyJson, IRequestCallback requestCallback);
 
