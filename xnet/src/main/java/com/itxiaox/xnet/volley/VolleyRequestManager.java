@@ -8,13 +8,13 @@
 //import com.android.volley.toolbox.JsonRequest;
 //import com.android.volley.toolbox.StringRequest;
 //import com.android.volley.toolbox.Volley;
-//import com.itxiaox.xnet.base.IRequestCallback;
-//import com.itxiaox.xnet.base.IRequestManager;
+//import com.itxiaox.xnet.base.HttpCallback;
+//import com.itxiaox.xnet.base.HttpManager;
 //
 //import org.json.JSONException;
 //import org.json.JSONObject;
 //
-//public class VolleyRequestManager implements IRequestManager {
+//public class VolleyRequestManager implements HttpManager {
 //    public static RequestQueue queue;
 //
 //    public static VolleyRequestManager getInstance() {
@@ -40,7 +40,7 @@
 //    }
 //
 //    @Override
-//    public void get(String url, IRequestCallback requestCallback) {
+//    public void get(String url, HttpCallback requestCallback) {
 //        StringRequest request = new StringRequest(Request.Method.GET, url,
 //                response -> {
 //            if(requestCallback!=null)
@@ -55,17 +55,17 @@
 //    }
 //
 //    @Override
-//    public void post(String url, String requestBodyJson, IRequestCallback requestCallback) {
+//    public void post(String url, String requestBodyJson, HttpCallback requestCallback) {
 //        requestWithBody(url, requestBodyJson, requestCallback, Request.Method.POST);
 //    }
 //
 //    @Override
-//    public void put(String url, String requestBodyJson, IRequestCallback requestCallback) {
+//    public void put(String url, String requestBodyJson, HttpCallback requestCallback) {
 //        requestWithBody(url, requestBodyJson, requestCallback, Request.Method.PUT);
 //    }
 //
 //    @Override
-//    public void delete(String url, String requestBodyJson, IRequestCallback requestCallback) {
+//    public void delete(String url, String requestBodyJson, HttpCallback requestCallback) {
 //        requestWithBody(url, requestBodyJson, requestCallback, Request.Method.DELETE);
 //    }
 //
@@ -77,7 +77,7 @@
 //     * @param requestCallback 回调接口
 //     * @param method          请求方法
 //     */
-//    private void requestWithBody(String url, String requestBodyJson, final IRequestCallback requestCallback, int method) {
+//    private void requestWithBody(String url, String requestBodyJson, final HttpCallback requestCallback, int method) {
 //        JSONObject jsonObject = null;
 //        try {
 //            jsonObject = new JSONObject(requestBodyJson);

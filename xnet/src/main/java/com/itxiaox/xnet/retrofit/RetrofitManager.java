@@ -2,34 +2,29 @@ package com.itxiaox.xnet.retrofit;
 
 import android.content.Context;
 
-import com.itxiaox.xnet.base.IRequestCallback;
-import com.itxiaox.xnet.base.IRequestManager;
-import com.itxiaox.xnet.base.RequestBody;
+import com.itxiaox.xnet.base.HttpCallback;
+import com.itxiaox.xnet.base.HttpConfig;
+import com.itxiaox.xnet.base.HttpLogger;
+import com.itxiaox.xnet.base.HttpManager;
+import com.itxiaox.xnet.base.HttpParams;
 
-import java.util.Map;
-import java.util.Set;
-
-public class RetrofitManager implements IRequestManager{
-    HttpClient.Builder builder;
-    HttpClient httpClient;
+public class RetrofitManager implements HttpManager {
+    private HttpClient.Builder builder;
+    private HttpClient httpClient;
     private static RetrofitManager retrofitManager;
+    private static RetrofitConfig config;
     @Override
     public void init(Context context,String baseUrl) {
-        builder =  new HttpClient.Builder().baseUrl(baseUrl);
-//        OkHttpClient  okHttpClient = new OkHttpClient.Builder()
-//                .connectTimeout(10, TimeUnit.SECONDS)
-//                .readTimeout(10, TimeUnit.SECONDS)
-//                .build();
-//
-//        Retrofit retrofit = new Retrofit.Builder()
-//                .baseUrl(BASE_URL)
-//                .client(okHttpClient)
-////                .addConverterFactory(GsonConverterFactory.create())
-////                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-//                .build();
-//        webService = retrofit.create(WebService.class);
+        config = RetrofitConfig.createDefault(baseUrl, HttpLogger.logger());
+        builder =  new HttpClient
+                .Builder();
     }
 
+    @Override
+    public void init(Context context, HttpConfig httpConfig) {
+        config = (RetrofitConfig) httpConfig;
+        builder =  new HttpClient.Builder();
+    }
 
     public static RetrofitManager getInstance(){
         if(retrofitManager==null){
@@ -44,14 +39,14 @@ public class RetrofitManager implements IRequestManager{
 
 
     @Override
-    public <T> void get(String url, RequestBody paramBody, IRequestCallback<T> requestCallback) {
+    public <T> void get(String url, HttpParams paramBody, HttpCallback<T> requestCallback) {
 
         builder.url(url);//这里的url是除 baseUrl之外
         builder.tag(url);
         if(paramBody!=null&&paramBody.getParams().size()>0){
             builder.params(paramBody.getParams());
         }
-        httpClient = builder.build();
+        httpClient = builder.build(config);
 
         httpClient.get(new OnResultListener<T> (){
             @Override
@@ -69,14 +64,14 @@ public class RetrofitManager implements IRequestManager{
     }
 
     @Override
-    public <T> void post(String url, RequestBody paramBody, IRequestCallback<T> requestCallback) {
+    public <T> void post(String url, HttpParams paramBody, HttpCallback<T> requestCallback) {
 
         builder.url(url);//这里的url是除 baseUrl之外
         if(paramBody!=null&&paramBody.getParams().size()>0){
             builder.params(paramBody.getParams());
         }
         builder.tag(url);
-        httpClient = builder.build();
+        httpClient = builder.build(config);
         httpClient.post(new OnResultListener<T> (){
             @Override
             public void onSuccess(T result) {
@@ -90,16 +85,5 @@ public class RetrofitManager implements IRequestManager{
                 requestCallback.onFailure(errcode,message);
             }
         });
-    }
-
-
-    @Override
-    public void put(String url, String requestBobyJson, IRequestCallback requestCallback) {
-
-    }
-
-    @Override
-    public void delete(String url, String requestBodyJson, IRequestCallback requestCallback) {
-
     }
 }

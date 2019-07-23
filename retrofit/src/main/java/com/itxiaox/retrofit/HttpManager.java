@@ -92,7 +92,6 @@ public class HttpManager {
 
     private OkHttpClient newOkHttpClient() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
-
         builder.connectTimeout(httpConfig.getConnectTimeoutMilliseconds(), TimeUnit.MILLISECONDS);
         //添加Https支持
         //方法一
@@ -101,7 +100,6 @@ public class HttpManager {
 //            //设置为true
 //            return true;
 //        });
-
         //方法二
         HttpsUtils.SSLParams sslParams = HttpsUtils.getSslSocketFactoryUnsafe();
         builder.sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager);

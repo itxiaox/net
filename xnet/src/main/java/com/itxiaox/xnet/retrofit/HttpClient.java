@@ -8,7 +8,8 @@ import com.franmontiel.persistentcookiejar.ClearableCookieJar;
 import com.franmontiel.persistentcookiejar.PersistentCookieJar;
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
-import com.itxiaox.xnet.R;
+import com.itxiaox.xnet.base.HttpConfig;
+import com.itxiaox.xnet.base.HttpLogger;
 import com.itxiaox.xnet.utils.ErrorCode;
 import com.itxiaox.xnet.utils.NetworkUtils;
 import com.itxiaox.xnet.utils.StringUtils;
@@ -21,10 +22,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.CallAdapter;
 import retrofit2.Callback;
+import retrofit2.Converter;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
@@ -40,20 +44,20 @@ public class HttpClient {
     private static final String STORE_ALIAS = "666666";
     /*用户设置的BASE_URL*/
     private static String BASE_URL = "";
-    /*本地使用的baseUrl*/
-    private String baseUrl = "";
     private static OkHttpClient okHttpClient;
     private Builder mBuilder;
     private Retrofit retrofit;
     private Call<ResponseBody> mCall;
     private static final Map<String, Call> CALL_MAP = new HashMap<>();
 
+    private static RetrofitConfig httpConfig;
     /**
      * 获取HttpClient的单例
      *
      * @return HttpClient的唯一对象
      */
-    private static HttpClient getIns() {
+    private static HttpClient getIns(HttpConfig config) {
+        httpConfig = (RetrofitConfig) config;
         return HttpClientHolder.sInstance;
     }
 
@@ -65,16 +69,33 @@ public class HttpClient {
     }
 
     private HttpClient() {
-        ClearableCookieJar cookieJar = new PersistentCookieJar(new SetCookieCache(),
-                new SharedPrefsCookiePersistor(Utils.getContext()));
+        //cookie 配置
+
         //HttpsUtil.SSLParams sslParams = HttpsUtil.getSslSocketFactory(Utils.getContext(), R.raw.cer,STORE_PASS , STORE_ALIAS);
-        okHttpClient = new OkHttpClient.Builder()
-                .connectTimeout(10000L, TimeUnit.MILLISECONDS)
+
+
+     OkHttpClient.Builder builder = new OkHttpClient.Builder()
+             .readTimeout(httpConfig.getConnectTimeoutMilliseconds(), TimeUnit.MILLISECONDS)
+             .connectTimeout(httpConfig.getConnectTimeoutMilliseconds(), TimeUnit.MILLISECONDS);
+
                 //.sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager)
                 // .hostnameVerifier(HttpsUtil.getHostnameVerifier())
-                .addInterceptor(new LoggerInterceptor(null, true))
-                .cookieJar(cookieJar)
-                .build();
+        if(HttpLogger.logger()){
+            builder .addInterceptor(new LoggerInterceptor(null, true));
+        }
+
+        //配置Interceptor
+        for (Interceptor interceptor:
+             httpConfig.getInterceptors()) {
+            builder.addInterceptor(interceptor);
+        }
+        if(httpConfig.enableCookie()){
+            //todo 此处的 context 需要重新优化
+            ClearableCookieJar cookieJar = new PersistentCookieJar(new SetCookieCache(),
+                    new SharedPrefsCookiePersistor(Utils.getContext()));
+            builder.cookieJar(cookieJar);
+        }
+        okHttpClient =   builder.build();
     }
 
     public Builder getBuilder() {
@@ -90,13 +111,21 @@ public class HttpClient {
      * 引起Retrofit变化的因素只有静态变量BASE_URL的改变。
      */
     private void getRetrofit() {
-        if (!BASE_URL.equals(baseUrl) || retrofit == null) {
-            baseUrl = BASE_URL;
-            retrofit = new Retrofit.Builder()
-                    .baseUrl(baseUrl)
-                    .client(okHttpClient)
-                    .build();
+        BASE_URL = httpConfig.getBaseUrl();
+        Retrofit.Builder builder  = new Retrofit.Builder()
+                    .baseUrl(BASE_URL);
+        //add Converter.Factory
+        for (Converter.Factory factory:
+             httpConfig.getConverterFactories()) {
+            builder.addConverterFactory(factory);
         }
+        //add callAdapter
+        for (CallAdapter.Factory factory:
+            httpConfig.getAdapterFactories() ) {
+            builder.addCallAdapterFactory(factory);
+        }
+        builder.client(okHttpClient);
+        retrofit = builder .build();
     }
 
     public void post(final OnResultListener onResultListener) {
@@ -295,11 +324,11 @@ public class HttpClient {
             return this;
         }
 
-        public HttpClient build() {
+        public HttpClient build(HttpConfig httpConfig) {
             if (!TextUtils.isEmpty(builderBaseUrl)) {
                 BASE_URL = builderBaseUrl;
             }
-            HttpClient client = HttpClient.getIns();
+            HttpClient client = HttpClient.getIns(httpConfig);
             client.getRetrofit();
             client.setBuilder(this);
             return client;
