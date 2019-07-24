@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.itxiaox.xnet.okhttp.OKHttpManager;
 import com.itxiaox.xnet.retrofit.RetrofitManager;
+import com.itxiaox.xnet.volley.VolleyManager;
 
 /**
  * 该类的作用是用于返回一个IRequestManager对象，这个IRequestManager的实现类
@@ -19,7 +20,7 @@ public class HttpFactory {
             throw new NullPointerException("httpManager is null,please init first");
         }
         return httpManager;
-//        return VolleyRequestManager.getInstance();
+//        return VolleyManager.getInstance();
     }
 
     public enum HttpManagerType {
@@ -51,9 +52,9 @@ public class HttpFactory {
             case OKHTTP:
                 httpManager = OKHttpManager.getInstance();
                 break;
-//                        case VOLLEY:
-//                            httpManager = VolleyRequestManager.getInstance();
-//                            break;
+            case VOLLEY:
+                httpManager = VolleyManager.getInstance();
+                break;
             case RETROFIT:
                 httpManager = RetrofitManager.getInstance();
                 break;

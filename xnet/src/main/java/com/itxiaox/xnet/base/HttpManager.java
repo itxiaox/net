@@ -1,6 +1,7 @@
 package com.itxiaox.xnet.base;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 /**
  * 此接口提供的激素http请求通用的方法，该接口可以用Volley实现，也可以用OkHttp等其他方式来实现
@@ -14,7 +15,7 @@ public interface HttpManager {
      * 初始化的一些配置,全局配置，在Application中配置
      * @param context 上下文对象
      */
-    default void init(Context context,String baseUrl){}
+    default void init(Context context,@NonNull String baseUrl){}
 
 
     default void init(Context context,HttpConfig httpConfig){};
@@ -25,7 +26,7 @@ public interface HttpManager {
      * @param httpCallback 请求结果回调
      * @param <T> 返回值的类型
      */
-    <T> void  get(String url, HttpParams httpParams, HttpCallback<T> httpCallback);
+    <T> void  get(@NonNull String url, HttpParams httpParams,@NonNull HttpCallback<T> httpCallback);
 
     /**
      *
@@ -34,7 +35,7 @@ public interface HttpManager {
      * @param httpCallback 请求结果回调
      * @param <T> 返回值的类型
      */
-    <T> void post(String url, HttpParams httpParams, HttpCallback<T> httpCallback);
+    <T> void post(@NonNull String url, @NonNull  HttpParams httpParams, @NonNull HttpCallback<T> httpCallback);
 
     /**
      * //todo 暂未实现

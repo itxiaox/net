@@ -72,6 +72,7 @@ dependencies {
     implementation 'com.orhanobut:logger:2.2.0'
 
     implementation 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
+
 }
 
 

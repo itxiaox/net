@@ -10,5 +10,10 @@ public class ErrorCode {
     /**
      * Http请求失败
      */
-    public static final int REQUEST_FAIL = 100;
+    public static final int REQUEST_FAIL = 101;
+
+    /**
+     * 解析错误
+     */
+    public static final int PARSE_ERROR = 102;
 }

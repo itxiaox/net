@@ -1,6 +1,7 @@
 package com.itxiaox.xnet.retrofit;
 
 import com.itxiaox.xnet.base.HttpConfig;
+import com.itxiaox.xnet.base.HttpLogger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,7 @@ public class RetrofitConfig extends HttpConfig {
     public static RetrofitConfig createDefault(String baseUrl, boolean logger) {
         Builder builder = new Builder();
         if (logger) {
-            builder.addInterceptor(new HttpLoggingInterceptor()
+            builder.addInterceptor(new HttpLoggingInterceptor(message -> HttpLogger.d(message))
                     .setLevel(HttpLoggingInterceptor.Level.BODY));
         }
         return builder.baseUrl(baseUrl)

@@ -34,22 +34,30 @@ public class ExampleInstrumentedTest {
     String APP_ID = "wx880db3ff4529e9aa";
     String AppSecret = "b989124f9c581d12f76100da5f5064e2";
     Context appContext;
-
+    String baseUrl = "https://www.wanandroid.com";
     private HttpManager httpManager;
     @Before
     public void useAppContext() {
         // Context of the app under test.
         appContext = InstrumentationRegistry.getTargetContext();
         Utils.init(appContext);
-        String baseUrl = "https://www.wanandroid.com";
 
         //方法一
         //默认初始化
-//      httpManager = HttpFactory.init(appContext,baseUrl,HttpFactory.HttpManagerType.OKHTTP);
+      httpManager = HttpFactory.init(appContext,baseUrl,HttpFactory.HttpManagerType.VOLLEY);
 
+
+//        init2();
+    }
+
+
+    /**
+     * 自定义配置
+     */
+    private void init2(){
         //方法二
         //自定义HttpConfig配置初始化
-      //  添加日志拦截器
+        //  添加日志拦截器
         HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
             @Override
             public void log(String message) {
@@ -76,7 +84,6 @@ public class ExampleInstrumentedTest {
 
         httpManager = HttpFactory.init(appContext,retrofitConfig,HttpFactory.HttpManagerType.RETROFIT);
     }
-
     /**
      * 测试retrofit 封装，Get请求，https请求
      */

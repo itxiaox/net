@@ -15,6 +15,7 @@ public class RetrofitManager implements HttpManager {
     private static RetrofitConfig config;
     @Override
     public void init(Context context,String baseUrl) {
+        HttpLogger.d("init RetrofitManager");
         config = RetrofitConfig.createDefault(baseUrl, HttpLogger.logger());
         builder =  new HttpClient
                 .Builder();
@@ -22,6 +23,7 @@ public class RetrofitManager implements HttpManager {
 
     @Override
     public void init(Context context, HttpConfig httpConfig) {
+        HttpLogger.d("init RetrofitManager");
         config = (RetrofitConfig) httpConfig;
         builder =  new HttpClient.Builder();
     }

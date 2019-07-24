@@ -1,6 +1,7 @@
 package com.itxiaox.xnet.okhttp;
 
 import com.itxiaox.xnet.base.HttpConfig;
+import com.itxiaox.xnet.base.HttpLogger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,9 @@ public class OkHttpConfig extends HttpConfig {
                 .baseUrl(baseUrl)
                 .connectTimeoutMilliseconds(DEFAULT_CONNECT_TIMEOUT);
         if (logger) {
-            okhttpBuilder.addInterceptor(new HttpLoggingInterceptor()
+            okhttpBuilder.addInterceptor(new HttpLoggingInterceptor(message -> {
+                HttpLogger.d(message);
+            })
                     .setLevel(HttpLoggingInterceptor.Level.BODY));
         }
         return okhttpBuilder.build();

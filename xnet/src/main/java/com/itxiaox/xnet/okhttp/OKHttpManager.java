@@ -56,6 +56,7 @@ public class OKHttpManager implements HttpManager {
 
     @Override
     public void init(Context context,String baseUrl) {
+        HttpLogger.d("init OKHttpManager");
         this.baseUrl = baseUrl;
         OkHttpConfig okHttpConfig = OkHttpConfig.createDefault(baseUrl,HttpLogger.logger());
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
@@ -73,6 +74,7 @@ public class OKHttpManager implements HttpManager {
 
     @Override
     public void init(Context context, HttpConfig httpConfig) {
+        HttpLogger.d("init OKHttpManager");
         OkHttpConfig okHttpConfig = (OkHttpConfig) httpConfig;
         this.baseUrl = okHttpConfig.getBaseUrl();
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
