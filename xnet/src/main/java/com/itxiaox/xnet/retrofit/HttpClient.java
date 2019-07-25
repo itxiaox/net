@@ -70,11 +70,8 @@ public class HttpClient {
 
     private HttpClient() {
         //cookie 配置
-
         //HttpsUtil.SSLParams sslParams = HttpsUtil.getSslSocketFactory(Utils.getContext(), R.raw.cer,STORE_PASS , STORE_ALIAS);
-
-
-     OkHttpClient.Builder builder = new OkHttpClient.Builder()
+      OkHttpClient.Builder builder = new OkHttpClient.Builder()
              .readTimeout(httpConfig.getConnectTimeoutMilliseconds(), TimeUnit.MILLISECONDS)
              .connectTimeout(httpConfig.getConnectTimeoutMilliseconds(), TimeUnit.MILLISECONDS);
 

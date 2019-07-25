@@ -2,8 +2,6 @@
 [ ![Download](https://api.bintray.com/packages/itxiaox/maven/retrofit/images/download.svg?version=0.5.0) ](https://bintray.com/itxiaox/maven/retrofit/0.5.0/link)
 
     对retrofit 进行封装 ，在项目更加简单易用
-    
-    //todo : 参考进行完善 [使用Retrofit2封装适用于组件化项目的网络库](https://blog.csdn.net/guiying712/article/details/74427258/)
 
 # 使用方法
 gradle 引用
