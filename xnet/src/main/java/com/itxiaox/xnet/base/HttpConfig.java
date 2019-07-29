@@ -1,5 +1,8 @@
 package com.itxiaox.xnet.base;
 
+/**
+ * Http请求配置类，主要配置header信息，timeout, ConvertAdapter等信息
+ */
 public class HttpConfig {
     protected String baseUrl;
     protected long connectTimeoutMilliseconds;

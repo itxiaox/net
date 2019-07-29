@@ -1,0 +1,14 @@
+
+#上传命令
+gradlew clean build bintrayUpload  -PbintrayUser=itxiaox -PbintrayKey=c158d4fea06de14df4ef28d6a479a56474c709d6 -PdryRun=false
+-
+
+//命令行 后面 跟 -x releaseAndroidJavadocs便能不执行此任务
+
+
+    //clean build generatePomFileForReleasePublication releaseAndroidJavadocs releaseAndroidJavadocsJar releaseAndroidSourcesJar publishReleasePublicationToMavenLocal
+    //bintrayUpload -PbintrayUser=bintray user -PbintrayKey=c158d4fea06de14df4ef28d6a479a56474c709d6 -PdryRun=false
+
+
+#设置字符编码，
+-encoding utf-8 -charset utf-8

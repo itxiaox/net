@@ -1,61 +1,38 @@
-package com.itxiaox.xnet;
+# XNet网络框架
+[ ![Download](https://api.bintray.com/packages/itxiaox/maven/xnet/images/download.svg?version=0.5.0-alpha) ](https://bintray.com/itxiaox/maven/xnet/0.5.0-alpha/link)
+------------
 
-import android.content.Context;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.runner.AndroidJUnit4;
-import android.util.Log;
+实现有多种替代解决方案的业务逻辑的封装，实现一键切换底层的请求方式（retrofit/volley/okhttp），而上层的业务逻辑不做任何改变
 
-import com.itxiaox.xnet.base.HttpCallback;
-import com.itxiaox.xnet.base.HttpLogger;
-import com.itxiaox.xnet.base.HttpManager;
-import com.itxiaox.xnet.base.HttpParams;
-import com.itxiaox.xnet.base.HttpFactory;
-import com.itxiaox.xnet.okhttp.OkHttpConfig;
-import com.itxiaox.xnet.retrofit.RetrofitConfig;
-import com.itxiaox.xnet.utils.Utils;
-import com.orhanobut.logger.Logger;
+## 使用方法
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+- 添加依赖
+	```
+	allprojects {
+		repositories {
+			jcenter()
+			maven {
+				url 'https://dl.bintray.com/itxiaox/maven/'
+			}
+		}
+	}
+	在module 中添加依赖
+	implementation 'com.itxiaox:xnet:0.5.0-alpha'
+	```
 
-import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.converter.gson.GsonConverterFactory;
+**初始化**
 
-/**
- * Instrumented test, which will execute on an Android device.
- *
- * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
- */
-@SuppressWarnings("ALL")
-@RunWith(AndroidJUnit4.class)
-public class ExampleInstrumentedTest {
-    private static final String TAG = "ExampleInstrumentedTest";
-    String APP_ID = "wx880db3ff4529e9aa";
-    String AppSecret = "b989124f9c581d12f76100da5f5064e2";
-    Context appContext;
-    String baseUrl = "https://www.wanandroid.com";
-    private HttpManager httpManager;
-    @Before
-    public void useAppContext() {
-        // Context of the app under test.
-        appContext = InstrumentationRegistry.getTargetContext();
-        Utils.init(appContext);
+1. 简单调用，采用默认的初始化方法：
+在Application的onCreate方法中进行初始化
+```
+HttpManager  httpManager = HttpFactory.init(appContext,baseUrl,HttpFactory.HttpManagerType.VOLLEY);//  OKHTTP:使用okhttp实现请求；VOLLEY：使用volley实现请求；RETROFIT：使用retrofit实现请求
+```
 
-        //方法一
-        //默认初始化
-      httpManager = HttpFactory.init(appContext,baseUrl,HttpFactory.HttpManagerType.VOLLEY);
+2.高级调用，采用自定义配置的方法进行调用
+在Application的onCreate方法中，
 
-
-//        init2();
-    }
-
-
-    /**
-     * 自定义配置
-     */
-    private void init2(){
-        //方法二
+```
+    //方法二
         //自定义HttpConfig配置初始化
         //  添加日志拦截器
         HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
@@ -69,6 +46,7 @@ public class ExampleInstrumentedTest {
         logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
 
+        
 //        OkHttpConfig okHttpConfig = new OkHttpConfig.Builder().baseUrl(baseUrl)
 //                .connectTimeoutMilliseconds(5000)
 //                .addInterceptor(logInterceptor).build();
@@ -83,9 +61,13 @@ public class ExampleInstrumentedTest {
                 .build();
 
         httpManager = HttpFactory.init(appContext,retrofitConfig,HttpFactory.HttpManagerType.RETROFIT);
-    }
-    /**
-     * 测试retrofit 封装，Get请求，https请求
+
+```
+
+**在具体的网络请求处：**
+```
+     /**
+     * 测试Get请求，https请求
      */
     @Test
     public void testGet(){
@@ -105,7 +87,7 @@ public class ExampleInstrumentedTest {
     }
 
     /**
-     * 测试retrofit 封装，Post请求，https请求
+     * 测试Post请求，https请求
      */
     @Test
     public void testPost(){
@@ -126,12 +108,23 @@ public class ExampleInstrumentedTest {
             }
         });
     }
+    ```
 
+# LICENSE
 
+    Copyright 2019 Xiaox
 
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
 
+       http://www.apache.org/licenses/LICENSE-2.0
 
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
 
-
-
-}
+ 
+ 
