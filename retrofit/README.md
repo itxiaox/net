@@ -28,11 +28,11 @@ gradle 引用
  
     
  //初始一次，一般可以采用在Application的onCreate中进行调用
-     HttpManager.init(baseUrl,true)
+     ```HttpManager.init(baseUrl,true)```
         
  //具体发送请求的
-        wxapiService = HttpManager.create(WXAPIService.class);`
-        wxapiService.getWXArticle().enqueue(...)``
+     ```   wxapiService = HttpManager.create(WXAPIService.class);`
+        wxapiService.getWXArticle().enqueue(...)```
     
 -  但如果需要自己去配置相关请求设置，如重新设置timeout, interceptor，convertFactory, adapterFactory等，可以采用如下方式
 
