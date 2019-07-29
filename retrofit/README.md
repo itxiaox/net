@@ -1,7 +1,10 @@
 # Retrofit封装库
-[ ![Download](https://api.bintray.com/packages/itxiaox/maven/retrofit/images/download.svg?version=0.5.0) ](https://bintray.com/itxiaox/maven/retrofit/0.5.0/link)
+[ ![Download](https://api.bintray.com/packages/itxiaox/maven/retrofit/images/download.svg?version=1.0.0) ](https://bintray.com/itxiaox/maven/retrofit/1.0.0/link)
 
-    对retrofit 进行封装 ，在项目更加简单易用
+------------
+
+
+   对retrofit 进行封装 ，在项目更加简单易用
 
 # 使用方法
 gradle 引用
@@ -15,51 +18,34 @@ gradle 引用
             }
         }
     }
+    在module 中添加依赖
 
-    //在module 中添加依赖
-    implementation 'com.itxiaox:retrofit:0.5.0'
+    implementation 'com.itxiaox:retrofit:1.0.0'
 
 代码中使用：
 
- - 在一般情况下，采用简单的默认配置即可
+ - 一般情况下可以采用默认的调用方式
  
-```
+    
  //初始一次，一般可以采用在Application的onCreate中进行调用
- HttpManager.init(baseUrl,true)
-//具体发送请求的
- wxapiService = HttpManager.create(WXAPIService.class);`
- wxapiService.getWXArticle().enqueue(...)``
+     ```HttpManager.init(baseUrl,true)```
+        
+ //具体发送请求的
+     ```   wxapiService = HttpManager.create(WXAPIService.class);`
+        wxapiService.getWXArticle().enqueue(...)```
+    
+-  但如果需要自己去配置相关请求设置，如重新设置timeout, interceptor，convertFactory, adapterFactory等，可以采用如下方式
+
+```java
+     HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor(new HttpLog());
+     logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+     HttpConfig httpConfig = new HttpConfig.Builder()
+            .baseUrl(baseUrl).addInterceptor(logInterceptor)
+            .addConverterFactory(GsonConverterFactory.create())
+             .build();
+     HttpManager.init(httpConfig);
 ```
 
-- 但如果需要重新设置timeout,interceptor，convertAdapter等，可以自己重新配置HttpConfig。
-
-```
-//初始一次，一般可以采用在Application的onCreate中进行调用
-
-//添加日志拦截器
-HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
-    @Override
-  public void log(String message) {
-        Log.d(TAG, "log:"+message); //在这里可以统一对请求的各项参数进行处理，
-  }
-});
-logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-
-//需要在headers中统一添加共用参数
-HeadersInterceptor headersInterceptor = new HeadersInterceptor.Builder()
-              .addHeaderParam("Content-Type","")
-              .addHeaderParam("Accept","application/json")
-               .build();
-//配置htpp请求
-HttpConfig httpConfig = new HttpConfig.Builder()
-  .baseUrl(baseUrl)
-  .addInterceptor(headersInterceptor)
-  .addInterceptor(logInterceptor)
-  .addConverterFactory(GsonConverterFactory.create())
-  .build();
- //初始化
- HttpManager.init(httpConfig);
-```
 
 
  # LICENSE
