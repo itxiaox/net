@@ -27,9 +27,10 @@ gradle 引用
  - 一般情况下可以采用默认的调用方式
  
     
-     //初始一次，一般可以采用在Application的onCreate中进行调用
-        HttpManager.init(baseUrl,true)
-        //具体发送请求的
+ //初始一次，一般可以采用在Application的onCreate中进行调用
+     HttpManager.init(baseUrl,true)
+        
+ //具体发送请求的
         wxapiService = HttpManager.create(WXAPIService.class);`
         wxapiService.getWXArticle().enqueue(...)``
     
