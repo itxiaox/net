@@ -2,21 +2,13 @@ package com.itxiaox.retrofit;
 
 import com.itxiaox.retrofit.Utils.HttpsUtils;
 
-import java.io.IOException;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import okhttp3.Authenticator;
-import okhttp3.Cookie;
-import okhttp3.CookieJar;
-import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.Route;
 import retrofit2.CallAdapter;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
@@ -104,30 +96,6 @@ public class HttpManager {
         HttpsUtils.SSLParams sslParams = HttpsUtils.getSslSocketFactoryUnsafe();
         builder.sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager);
         builder.hostnameVerifier(HttpsUtils.getHostnameVerifier());
-
-        builder.addInterceptor(new TokenInterceptor());//添加获取token的拦截器,token身份校验，Authorization
-
-//        CookieManager cookieManager = new CookieManager();
-//        cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
-//        builder.cookieJar(new CookieJar() {
-//            @Override
-//            public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
-//
-//            }
-//
-//            @Override
-//            public List<Cookie> loadForRequest(HttpUrl url) {
-//                return null;
-//            }
-//        });
-
-//        builder.authenticator(new Authenticator() {
-//            @Override
-//            public Request authenticate(Route route, Response response) throws IOException {
-//                return null;
-//            }
-//        });
-
         //设置拦截器
         List<Interceptor> interceptors = httpConfig.getInterceptors();
         if (interceptors != null && !interceptors.isEmpty()) {
