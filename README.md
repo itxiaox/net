@@ -12,21 +12,3 @@ retrofit官网：http://square.github.io/retrofit/
 https://blog.csdn.net/ghost_programmer/article/details/52372065
 
 实现有多种替代解决方案的业务逻辑
-
-
-
-# 使用方法
-gradle 引用
-    在根gradle中添加
-
-    allprojects {
-        repositories {
-            jcenter()
-            maven {
-                url 'https://dl.bintray.com/itxiaox/maven/'
-            }
-        }
-    }
-    在module 中添加依赖
-
-    implementation 'com.itxiaox:xnet:0.1.0'
