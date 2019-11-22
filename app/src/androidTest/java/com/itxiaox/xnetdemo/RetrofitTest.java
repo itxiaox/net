@@ -1,7 +1,13 @@
 package com.itxiaox.xnetdemo;
 
 
-import android.support.test.runner.AndroidJUnit4;
+import android.os.Environment;
+import android.util.Log;
+
+import androidx.test.runner.AndroidJUnit4;
+
+import com.itxiaox.retrofit.DownLoadUtils;
+import com.itxiaox.retrofit.DownloadListener;
 import com.itxiaox.retrofit.HttpConfig;
 import com.itxiaox.retrofit.HttpManager;
 import com.orhanobut.logger.AndroidLogAdapter;
@@ -11,12 +17,17 @@ import com.orhanobut.logger.PrettyFormatStrategy;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.Executors;
+
 import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 @RunWith(AndroidJUnit4.class)
@@ -26,7 +37,6 @@ public class RetrofitTest {
     String baseUrl ;
     private WXAPIService wxapiService;
 
-    @Before
     public void init(){
 //         baseUrl = "https://itxiaox.github.io";
          baseUrl = "https://www.wanandroid.com";
@@ -86,5 +96,65 @@ public class RetrofitTest {
             }
         });
     }
+
+
+    @Test
+    public void testDownload(){
+        String url = "/16891/89E1C87A75EB3E1221F2CDE47A60824A.apk?fsname=com.snda.wifilocating_4.2.62_3192.apk&csr=1bbd";
+        String path = Environment.getDataDirectory().getAbsolutePath()+File.separator+"net"+File.separator+"test.apk";
+        Log.d(TAG, "testDownload: path="+path);
+        download(url, path, new DownloadListener() {
+            @Override
+            public void onStart() {
+                Log.d(TAG, "onStart: ");
+            }
+
+            @Override
+            public void onProgress(int progress) {
+
+                Log.d(TAG, "onProgress: "+progress);
+            }
+
+            @Override
+            public void onFinish(String path) {
+
+                Log.d(TAG, "onFinish: "+path);
+            }
+
+            @Override
+            public void onFail(String errorInfo) {
+
+                Log.d(TAG, "onFail: "+errorInfo);
+            }
+        });
+    }
+
+    public void download(String url,String path, DownloadListener downloadListener) {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://imtt.dd.qq.com")
+                //通过线程池获取一个线程，指定callback在子线程中运行。
+                .callbackExecutor(Executors.newSingleThreadExecutor())
+                .build();
+
+        DownloadService service = retrofit.create(DownloadService.class);
+//        String url = "";
+        service.download(url).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                //将Response写入到从磁盘中，详见下面分析
+                //注意，这个方法是运行在子线程中的
+                DownLoadUtils.writeResponseToDisk(path, response, downloadListener);
+//                    Logger.json(result);
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                System.out.println("fail:"+t);
+            }
+        });
+    }
+
+
 
 }

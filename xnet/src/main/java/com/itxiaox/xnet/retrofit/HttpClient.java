@@ -1,7 +1,6 @@
 package com.itxiaox.xnet.retrofit;
 
 
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.franmontiel.persistentcookiejar.ClearableCookieJar;
@@ -315,7 +314,7 @@ public class HttpClient {
          * @param clazz    指定的解析类
          * @param <T>      解析类
          */
-        public <T> Builder bodyType(@DataType.Type int bodyType, @NonNull Class<T> clazz) {
+        public <T> Builder bodyType(@DataType.Type int bodyType,  Class<T> clazz) {
             this.bodyType = bodyType;
             this.clazz = clazz;
             return this;

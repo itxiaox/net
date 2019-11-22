@@ -60,6 +60,8 @@ public class HttpManager {
         return instance.retrofit.create(service);
     }
 
+
+
     private Retrofit newRetrofit(){
         Retrofit.Builder builder = new Retrofit.Builder();
         builder.baseUrl(httpConfig.getBaseUrl());

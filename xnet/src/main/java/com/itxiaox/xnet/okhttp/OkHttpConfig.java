@@ -28,6 +28,7 @@ public class OkHttpConfig extends HttpConfig {
         Builder okhttpBuilder = new Builder()
                 .baseUrl(baseUrl)
                 .connectTimeoutMilliseconds(DEFAULT_CONNECT_TIMEOUT);
+        okhttpBuilder.addInterceptor(new NetworkStateInterceptor());
         if (logger) {
             okhttpBuilder.addInterceptor(new HttpLoggingInterceptor(message -> {
                 HttpLogger.d(message);

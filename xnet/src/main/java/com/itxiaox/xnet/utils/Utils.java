@@ -6,12 +6,9 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.view.View;
+
+import androidx.annotation.StringRes;
 
 /**
  * <p>Utils初始化相关 </p>
@@ -50,7 +47,6 @@ public class Utils {
      * @return Activity
      */
     public static
-    @NonNull
     Activity getActivity(View view) {
         Context context = view.getContext();
 
@@ -90,21 +86,6 @@ public class Utils {
             return false;
         }
     }
-
-
-    /**
-     * The {@code fragment} is added to the container view with id {@code frameId}. The operation is
-     * performed by the {@code fragmentManager}.
-     */
-    public static void addFragmentToActivity(@NonNull FragmentManager fragmentManager,
-                                             @NonNull Fragment fragment, int frameId) {
-        checkNotNull(fragmentManager);
-        checkNotNull(fragment);
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.add(frameId, fragment);
-        transaction.commit();
-    }
-
 
     public static <T> T checkNotNull(T obj) {
         if (obj == null) {

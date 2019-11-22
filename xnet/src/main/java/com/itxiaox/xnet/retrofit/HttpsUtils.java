@@ -1,9 +1,10 @@
 package com.itxiaox.xnet.retrofit;
 
 import android.content.Context;
-import android.support.annotation.RawRes;
 import android.text.TextUtils;
 
+
+import androidx.annotation.RawRes;
 
 import com.itxiaox.xnet.utils.CloseUtils;
 

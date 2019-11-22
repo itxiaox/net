@@ -1,7 +1,8 @@
 package com.itxiaox.xnet.base;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 /**
  * 此接口提供的激素http请求通用的方法，该接口可以用Volley实现，也可以用OkHttp等其他方式来实现

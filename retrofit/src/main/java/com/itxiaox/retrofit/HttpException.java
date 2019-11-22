@@ -12,6 +12,8 @@ public class HttpException extends RuntimeException {
     public static final int WRONG_PASSWORD = 1001;
     private static String message;
 
+    public static final int NO_NETWORK = -1;//没有网络
+
 
     /**
      * Instantiates a new Http exception.
@@ -38,6 +40,9 @@ public class HttpException extends RuntimeException {
 
     private static String getApiExceptionMessage(int code) {
         switch (code) {
+            case NO_NETWORK:
+                message = "没有网络";
+                break;
             case USER_NOT_EXIST:
                 message = "该用户不存在";
                 break;

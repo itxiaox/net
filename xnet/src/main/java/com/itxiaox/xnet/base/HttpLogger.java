@@ -28,7 +28,7 @@ public class HttpLogger {
         Log.e(TAG,msg);
     }
 
-    public static void format(String format,String... args){
+    public static void format(String format,Object... args){
         Log.d(TAG,String.format(Locale.getDefault(),format, args));
     }
 

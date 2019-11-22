@@ -1,19 +1,19 @@
 package com.itxiaox.xnet;
 
 import android.content.Context;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
 
+import androidx.test.InstrumentationRegistry;
+import androidx.test.runner.AndroidJUnit4;
+
 import com.itxiaox.xnet.base.HttpCallback;
+import com.itxiaox.xnet.base.HttpFactory;
 import com.itxiaox.xnet.base.HttpLogger;
 import com.itxiaox.xnet.base.HttpManager;
 import com.itxiaox.xnet.base.HttpParams;
-import com.itxiaox.xnet.base.HttpFactory;
-import com.itxiaox.xnet.okhttp.OkHttpConfig;
+import com.itxiaox.xnet.okhttp.NetworkStateInterceptor;
 import com.itxiaox.xnet.retrofit.RetrofitConfig;
 import com.itxiaox.xnet.utils.Utils;
-import com.orhanobut.logger.Logger;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -41,12 +41,10 @@ public class XNetInstrumentedTest {
         // Context of the app under test.
         appContext = InstrumentationRegistry.getTargetContext();
         Utils.init(appContext);
-
         //方法一
         //默认初始化
       httpManager = HttpFactory.init(appContext,baseUrl,HttpFactory.HttpManagerType.VOLLEY);
-
-
+      //方法二，灵活的配置HttpConfig
 //        init2();
     }
 
@@ -68,17 +66,14 @@ public class XNetInstrumentedTest {
         });
         logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-
-
 //        OkHttpConfig okHttpConfig = new OkHttpConfig.Builder().baseUrl(baseUrl)
 //                .connectTimeoutMilliseconds(5000)
 //                .addInterceptor(logInterceptor).build();
 //        httpManager = HttpFactory.init(appContext,okHttpConfig,HttpFactory.HttpManagerType.OKHTTP);
-
-
         RetrofitConfig retrofitConfig = new RetrofitConfig.Builder()
                 .baseUrl(baseUrl)
                 .connectTimeoutMilliseconds(5000)
+                .addInterceptor(new NetworkStateInterceptor())
                 .addInterceptor(logInterceptor)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
@@ -91,7 +86,7 @@ public class XNetInstrumentedTest {
     @Test
     public void testGet(){
         String url = "/wxarticle/chapters/json/";
-//        String url = "http://www.wanandroid.com/tools/mockapi/9932/getUser";
+//        String url = "http://www.wanandroid.com/wxarticle/chapters/json/";
         httpManager.get(url, null, new HttpCallback<String>() {
             @Override
             public void onSuccess(String response) {
@@ -110,6 +105,7 @@ public class XNetInstrumentedTest {
      */
     @Test
     public void testPost(){
+        //
         String url = "/user/login";
         HttpParams httpParams = new HttpParams();
         httpParams.addParams("username","itxiaox");
@@ -127,12 +123,5 @@ public class XNetInstrumentedTest {
             }
         });
     }
-
-
-
-
-
-
-
 
 }

@@ -1,8 +1,16 @@
-apply plugin: 'com.android.library'
-apply plugin: 'com.novoda.bintray-release'
+def isLib = false
+if(isLib){
+    apply plugin: 'com.android.library'
+    apply plugin: 'com.novoda.bintray-release'
+}else {
+    apply plugin: 'com.android.application'
+}
 android {
-    compileSdkVersion 27
+    compileSdkVersion 28
     defaultConfig {
+        if (!isLib){
+            applicationId "com.itxiaox.xnet"
+        }
         minSdkVersion 21
         //noinspection OldTargetApi
         targetSdkVersion 27
@@ -37,10 +45,10 @@ android {
 //noinspection SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     //okhttp
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
     //Retrofit提供的Converter
@@ -74,6 +82,7 @@ dependencies {
     implementation 'com.orhanobut:logger:2.2.0'
 
     implementation 'com.github.franmontiel:PersistentCookieJar:1.0.1'
+    implementation 'com.android.support:support-annotations:28.0.0'
 
 }
 
@@ -90,18 +99,20 @@ allprojects {
         }
     }
 }
-//添加
+if(isLib){
+    //添加
 //noinspection SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection
-publish {
+    publish {
 //    repoName = 'Android'           //bintray仓库名
-    userOrg = 'itxiaox'//bintray.com用户名 -bintray注册的用户名
-    groupId = 'com.itxiaox'//jcenter上的路径 compile引用时的第1部分groupId
-    artifactId = 'xnet'//项目名称  compile引用时的第2部分项目名
-    publishVersion = '0.5.0-alpha'// compile引用时的第3部分版本号
-    desc = 'alpha vesion'
-    website = 'https://github.com/itxiaox/XNet'//网站，不重要；尽量模拟github上的地址，例如我这样的；当然你有地址最好了
-    //上传命令
-    //gradlew clean build bintrayUpload  -PbintrayUser=itxiaox -PbintrayKey=c158d4fea06de14df4ef28d6a479a56474c709d6 -PdryRun=false
-    //clean build generatePomFileForReleasePublication releaseAndroidJavadocs releaseAndroidJavadocsJar releaseAndroidSourcesJar publishReleasePublicationToMavenLocal
-    //bintrayUpload -PbintrayUser=bintray user -PbintrayKey=c158d4fea06de14df4ef28d6a479a56474c709d6 -PdryRun=false
+        userOrg = 'itxiaox'//bintray.com用户名 -bintray注册的用户名
+        groupId = 'com.itxiaox'//jcenter上的路径 compile引用时的第1部分groupId
+        artifactId = 'xnet'//项目名称  compile引用时的第2部分项目名
+        publishVersion = '0.5.0-alpha'// compile引用时的第3部分版本号
+        desc = 'alpha vesion'
+        website = 'https://github.com/itxiaox/XNet'//网站，不重要；尽量模拟github上的地址，例如我这样的；当然你有地址最好了
+        //上传命令
+        //gradlew clean build bintrayUpload  -PbintrayUser=itxiaox -PbintrayKey=c158d4fea06de14df4ef28d6a479a56474c709d6 -PdryRun=false
+        //clean build generatePomFileForReleasePublication releaseAndroidJavadocs releaseAndroidJavadocsJar releaseAndroidSourcesJar publishReleasePublicationToMavenLocal
+        //bintrayUpload -PbintrayUser=bintray user -PbintrayKey=c158d4fea06de14df4ef28d6a479a56474c709d6 -PdryRun=false
+    }
 }
