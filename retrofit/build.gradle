@@ -11,31 +11,31 @@ dependencies {
 tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
 }
+apply from : "../publishJavaLib.gradle"
 
-
-
-if (uploadJitpack){
-    apply from : "../publishJavaLib.gradle"
-}else {
-    apply plugin: 'maven'
-    //方法一
-//发布到本地的maven仓库
-    uploadArchives {
-        repositories {
-            mavenDeployer {
-                pom.project {
-                    // 自定义的项目分组
-                    groupId 'com.github.itxiaox.net'
-                    // 自定义项目名称
-                    artifactId 'retrofit'
-                    // 项目版本号
-                    version '1.0.4'
-                }
-                // 自定义本地仓库路径，此处是项目根目录下的 repo 目录中
-//            repository(url: uri("../repo"))
-                repository(url: uri("F:/maven/repo"))
-            }
-        }
-    }
-}
-
+//
+//if (uploadJitpack){
+//    apply from : "../publishJavaLib.gradle"
+//}else {
+//    apply plugin: 'maven'
+//    //方法一
+////发布到本地的maven仓库
+//    uploadArchives {
+//        repositories {
+//            mavenDeployer {
+//                pom.project {
+//                    // 自定义的项目分组
+//                    groupId 'com.github.itxiaox.net'
+//                    // 自定义项目名称
+//                    artifactId 'retrofit'
+//                    // 项目版本号
+//                    version '1.0.4'
+//                }
+//                // 自定义本地仓库路径，此处是项目根目录下的 repo 目录中
+////            repository(url: uri("../repo"))
+//                repository(url: uri("F:/maven/repo"))
+//            }
+//        }
+//    }
+//}
+//
