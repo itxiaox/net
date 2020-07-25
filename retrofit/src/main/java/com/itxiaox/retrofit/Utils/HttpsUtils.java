@@ -117,15 +117,12 @@ public class HttpsUtils {
      * 主机名校验方法，请把”192.168.0.10”换成你们公司的主机IP：
      */
     public static HostnameVerifier getHostnameVerifier() {
-        return new HostnameVerifier() {
-            @Override
-            public boolean verify(String hostname, SSLSession session) {
-                if ("192.168.0.10".equals(hostname)) {
-                    return true;
-                } else {
-                    HostnameVerifier hv = HttpsURLConnection.getDefaultHostnameVerifier();
-                    return hv.verify(hostname, session);
-                }
+        return (hostname, session) -> {
+            if ("192.168.0.10".equals(hostname)) {
+                return true;
+            } else {
+                HostnameVerifier hv = HttpsURLConnection.getDefaultHostnameVerifier();
+                return hv.verify(hostname, session);
             }
         };
     }

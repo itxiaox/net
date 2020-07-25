@@ -1,3 +1,4 @@
 //include ':app', ':download', ':downloaddemo'
-//include ':retrofit'
+include ':test'
+include ':retrofit'
 include ':xnet'

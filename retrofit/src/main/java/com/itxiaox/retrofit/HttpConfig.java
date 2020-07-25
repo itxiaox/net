@@ -17,7 +17,7 @@ public class HttpConfig {
     private List<Converter.Factory> converterFactories;
     private List<CallAdapter.Factory> adapterFactories;
 
-    private static final long DEFAULT_CONNECT_TIMEOUT = 15 * 1000;
+    private static final long DEFAULT_CONNECT_TIMEOUT = 60 * 1000;
 
 
     /**

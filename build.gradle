@@ -7,9 +7,8 @@ buildscript {
     }
     dependencies {
         //noinspection GradleDependency
-        classpath 'com.android.tools.build:gradle:3.5.0'
-        //Android Studio3.14以及以上的版本需要将引入
-        classpath 'com.novoda:bintray-release:0.8.0'
+        classpath 'com.android.tools.build:gradle:3.5.4'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -18,6 +17,7 @@ allprojects {
     repositories {
         google()
         jcenter()
+        maven { url "F:\\maven\\repo"}
         maven {
             url 'https://dl.bintray.com/itxiaox/maven/'
             maven { url "https://jitpack.io" }
@@ -28,3 +28,5 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+ext.uploadJitpack = false

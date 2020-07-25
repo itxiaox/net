@@ -1,7 +1,6 @@
 apply plugin: 'java-library'
-apply plugin: 'com.novoda.bintray-release'
+apply plugin: 'maven'
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
     //retrofit
     api 'com.squareup.retrofit2:retrofit:2.4.0'
     //okhttp3 logging
@@ -12,17 +11,30 @@ dependencies {
 tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
 }
-sourceCompatibility = "8"
-targetCompatibility = "8"
-//添加
-//noinspection SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection
-publish {
-//    repoName = 'Android'           //bintray仓库名
-    userOrg = 'itxiaox'//bintray.com用户名 -bintray注册的用户名
-    groupId = 'com.itxiaox'//jcenter上的路径 compile引用时的第1部分groupId
-    artifactId = 'retrofit'//项目名称  compile引用时的第2部分项目名
-    publishVersion = '1.0.0'// compile引用时的第3部分版本号
-//    desc = '增加builder模式构建'
-    website = 'https://github.com/itxiaox/XNet'//网站，不重要；尽量模拟github上的地址，例如我这样的；当然你有地址最好了
 
+
+
+if (uploadJitpack){
+    apply from :"../publishAndroidLib.gradle"
+}else {
+    //方法一
+//发布到本地的maven仓库
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                pom.project {
+                    // 自定义的项目分组
+                    groupId 'com.github.itxiaox.net'
+                    // 自定义项目名称
+                    artifactId 'retrofit'
+                    // 项目版本号
+                    version '1.0.4'
+                }
+                // 自定义本地仓库路径，此处是项目根目录下的 repo 目录中
+//            repository(url: uri("../repo"))
+                repository(url: uri("F:/maven/repo"))
+            }
+        }
+    }
 }
+
