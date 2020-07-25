@@ -18,13 +18,10 @@ allprojects {
         google()
         jcenter()
         maven { url "F:\\maven\\repo"}
-        maven {
-            url 'https://dl.bintray.com/itxiaox/maven/'
-            maven { url "https://jitpack.io" }
-        }
+        maven { url "https://jitpack.io" }
     }
 }
-
+//
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
