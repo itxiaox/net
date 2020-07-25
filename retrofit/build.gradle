@@ -1,5 +1,5 @@
 apply plugin: 'java-library'
-apply plugin: 'maven'
+
 dependencies {
     //retrofit
     api 'com.squareup.retrofit2:retrofit:2.4.0'
@@ -15,8 +15,10 @@ tasks.withType(JavaCompile) {
 
 
 if (uploadJitpack){
-    apply from :"../publishAndroidLib.gradle"
+    print(" $uploadJitpack")
+    apply from : "../publishJavaLib.gradle"
 }else {
+    apply plugin: 'maven'
     //方法一
 //发布到本地的maven仓库
     uploadArchives {
