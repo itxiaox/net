@@ -1,5 +1,7 @@
-package com.itxiaox.download;
+package com.itxiaox.download.core;
 
+
+import com.itxiaox.download.core.DownloadListener;
 
 import java.io.BufferedOutputStream;
 import java.io.File;

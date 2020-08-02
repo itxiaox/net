@@ -2,3 +2,4 @@
 include ':test'
 include ':retrofit'
 include ':xnet'
+include ':download'

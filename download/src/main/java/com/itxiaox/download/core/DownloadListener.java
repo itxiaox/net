@@ -1,4 +1,4 @@
-package com.itxiaox.download;
+package com.itxiaox.download.core;
 
 public interface DownloadListener {
     void onStart();//从下载开始

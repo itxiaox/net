@@ -1,7 +1,6 @@
 package com.itxiaox.download;
 
 import android.content.Context;
-import android.graphics.Interpolator;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -9,13 +8,15 @@ import androidx.work.Data;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
+import com.itxiaox.download.core.DownLoadUtils;
+import com.itxiaox.download.core.DownloadListener;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Enumeration;
-import java.util.concurrent.Executors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;

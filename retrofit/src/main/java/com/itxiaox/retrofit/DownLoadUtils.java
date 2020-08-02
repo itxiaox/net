@@ -12,7 +12,8 @@ import retrofit2.Response;
 
 public class DownLoadUtils {
 
-    public static void writeResponseToDisk(String path, Response<ResponseBody> response, DownloadListener downloadListener) {
+    public static void writeResponseToDisk(String path, Response<ResponseBody> response,
+                                           DownloadListener downloadListener) {
         //从response获取输入流以及总大小
         writeFileFromIS(new File(path), response.body().byteStream(), response.body().contentLength(), downloadListener);
     }
@@ -20,7 +21,8 @@ public class DownLoadUtils {
     private static int sBufferSize = 8192;
 
     //将输入流写入文件
-    private static void writeFileFromIS(File file, InputStream is, long totalLength, DownloadListener downloadListener) {
+    private static void writeFileFromIS(File file, InputStream is, long totalLength,
+                                        DownloadListener downloadListener) {
         //开始下载
         downloadListener.onStart();
 
