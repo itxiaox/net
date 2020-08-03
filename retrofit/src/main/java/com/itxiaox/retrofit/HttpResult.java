@@ -14,6 +14,12 @@ public class HttpResult<T> {
      *
      *     }
      * }
+     * </br>or</br>
+     * {
+     *     "code":0,
+     *     "msg":"成功",
+     *     "data":[]
+     * }
      */
 
     private int code;

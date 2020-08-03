@@ -35,6 +35,7 @@ dependencies {
 //    implementation 'com.github.itxiaox.net:retrofit:1.0.3'
 //    implementation 'com.github.itxiaox:retrofit:1.0.4'
     implementation 'com.github.itxiaox:net:1.0.4'
+//    implementation 'com.github.itxiaox.net:retrofit:1.0.4'
 //    implementation project(":retrofit")
     implementation 'com.orhanobut:logger:2.2.0'
 //    //gson converter

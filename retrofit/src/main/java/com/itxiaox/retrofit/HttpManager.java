@@ -3,6 +3,9 @@ package com.itxiaox.retrofit;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Http请求管理类
+ */
 public class HttpManager {
 
     private static HttpClient httpClient;
@@ -71,6 +74,12 @@ public class HttpManager {
         return httpClient;
     }
 
+    /**
+     * 获取WebServices
+     * @param clazz webServices类型
+     * @param <T>
+     * @return
+     */
     public static <T> T  createWebService(Class<T> clazz) {
         if(httpClient==null){
             throw new NullPointerException("HttpClient in null , HttpFactory#initClient first,please");

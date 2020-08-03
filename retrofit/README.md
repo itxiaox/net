@@ -1,9 +1,8 @@
 # Retrofit封装库
 [![](https://jitpack.io/v/itxiaox/net.svg)](https://jitpack.io/#itxiaox/net)
-
+你的一个star，就是我分享的动力❤️。
 
 ----------
-
 
    >对retrofit 进行封装 ，提供一个更加简单易用的接口，在项目更加简单易用
    
@@ -24,20 +23,20 @@
 	
 	``` 
 
-		allprojects {
-			repositories {
-				jcenter()
-			   maven { url 'https://jitpack.io' }
-			}
+	allprojects {
+		repositories {
+			jcenter()
+		   maven { url 'https://jitpack.io' }
 		}
+	}
 	```
 
    
 
  -  在module 中添加依赖
 
-	``` nginx
-	  implementation 'com.github.itxiaox:retrofit:1.0.4'
+	```
+	implementation 'com.github.itxiaox:retrofit:1.0.4'
 	```
 
 ### 2. 代码中使用：
@@ -45,9 +44,9 @@
  - 一般情况下可以采用默认的调用方式
  
     
-	``` swift
+	``` java
 	 //初始一次，一般可以采用在Application的onCreate中进行调用
-		HttpManager.init(baseUrl,true)
+		 HttpManager.initClient(baseUrl,true);
 
 	 //具体发送请求的
 		wxapiService = HttpManager.create(WXAPIService.class);`
@@ -56,15 +55,32 @@
     
 -  但如果需要自己去配置相关请求设置，如重新设置timeout, interceptor，convertFactory, adapterFactory等，可以采用如下方式
 
-	```java
-		 HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor(new HttpLog());
-		 logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-		 HttpConfig httpConfig = new HttpConfig.Builder()
-				.baseUrl(baseUrl).addInterceptor(logInterceptor)
-				.addConverterFactory(GsonConverterFactory.create())
-				 .build();
-		 HttpManager.init(httpConfig);
-	```
+	
+
+``` java
+//        添加日志拦截器
+        HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
+            @Override
+            public void log(String message) {
+//                Log.d(TAG, "log:"+message);
+
+                Logger.e(message);
+            }
+        });
+        logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        //添加通用的请求参数，放到heaader中
+//        HeadersInterceptor headersInterceptor = new HeadersInterceptor.Builder()
+//                .addHeaderParam("Content-Type","")
+//                .addHeaderParam("Accept","application/json")
+//                .build();
+        HttpConfig httpConfig = new HttpConfig.Builder()
+                .baseUrl(baseUrl)
+ //               .addInterceptor(headersInterceptor)
+                .addInterceptor(logInterceptor)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        HttpManager.initClient(httpConfig);
+```
 
 
 

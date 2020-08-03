@@ -9,6 +9,15 @@ import retrofit2.CallAdapter;
 import retrofit2.Converter;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+/**
+ * 配置Http请求相关参数
+ *
+ *<P>
+ * 默认: </br>
+ * timeout = 60s;
+ *  .addConverterFactory(GsonConverterFactory.create())
+ *</P>
+ */
 public class HttpConfig {
 
     private String baseUrl;
@@ -164,9 +173,6 @@ public class HttpConfig {
 
 
 //    public static HttpConfig createDefault(String baseUrl,boolean logger){
-//
-//
-//
 //    }
 
 

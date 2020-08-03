@@ -41,12 +41,12 @@ public class RetrofitTest {
     private static final String TAG = "RetrofitTest";
     String baseUrl ;
     private WXAPIService wxapiService;
-    HttpConfig httpConfig;
+    private Context appContext;
+
     @Test
     public void useAppContext() {
         // Context of the app under test.
-        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("com.github.itxiaox.baseapp", appContext.getPackageName());
+        appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
     }
 
     @Before
@@ -84,7 +84,6 @@ public class RetrofitTest {
                 .addInterceptor(logInterceptor)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-//        HttpManager.init(httpConfig);
         HttpManager.initClient(httpConfig);
     }
 
