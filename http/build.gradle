@@ -1,23 +1,14 @@
-def isLib = false
-if(isLib){
-    apply plugin: 'com.android.library'
-    apply plugin: 'com.novoda.bintray-release'
-}else {
-    apply plugin: 'com.android.application'
-}
+apply plugin: 'com.android.library'
 android {
     compileSdkVersion 28
     defaultConfig {
-        if (!isLib){
-            applicationId "com.itxiaox.xnet"
-        }
         minSdkVersion 21
         //noinspection OldTargetApi
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
     }
 
@@ -80,39 +71,9 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.android.volley:volley:1.1.0'
     implementation 'com.orhanobut:logger:2.2.0'
-
     implementation 'com.github.franmontiel:PersistentCookieJar:1.0.1'
-    implementation 'com.android.support:support-annotations:28.0.0'
 
 }
 
 
-allprojects {
-    repositories {
-        jcenter()
-    }
-    tasks.withType(Javadoc) {
-        options {
-            encoding "UTF-8"
-            charSet 'UTF-8'
-            links "http://docs.oracle.com/javase/7/docs/api"
-        }
-    }
-}
-if(isLib){
-    //添加
-//noinspection SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection,SpellCheckingInspection
-    publish {
-//    repoName = 'Android'           //bintray仓库名
-        userOrg = 'itxiaox'//bintray.com用户名 -bintray注册的用户名
-        groupId = 'com.itxiaox'//jcenter上的路径 compile引用时的第1部分groupId
-        artifactId = 'xnet'//项目名称  compile引用时的第2部分项目名
-        publishVersion = '0.5.0-alpha'// compile引用时的第3部分版本号
-        desc = 'alpha vesion'
-        website = 'https://github.com/itxiaox/XNet'//网站，不重要；尽量模拟github上的地址，例如我这样的；当然你有地址最好了
-        //上传命令
-        //gradlew clean build bintrayUpload  -PbintrayUser=itxiaox -PbintrayKey=c158d4fea06de14df4ef28d6a479a56474c709d6 -PdryRun=false
-        //clean build generatePomFileForReleasePublication releaseAndroidJavadocs releaseAndroidJavadocsJar releaseAndroidSourcesJar publishReleasePublicationToMavenLocal
-        //bintrayUpload -PbintrayUser=bintray user -PbintrayKey=c158d4fea06de14df4ef28d6a479a56474c709d6 -PdryRun=false
-    }
-}
+apply from : "../publishAndroidLib.gradle"
