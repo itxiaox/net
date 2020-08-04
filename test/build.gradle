@@ -31,10 +31,11 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
 
-//    implementation project(":xnet")
+    implementation project(":http")
 //    implementation 'com.github.itxiaox.net:retrofit:1.0.3'
 //    implementation 'com.github.itxiaox:retrofit:1.0.4'
-    implementation 'com.github.itxiaox:net:1.0.4'
+    implementation 'com.github.itxiaox.net:retrofit:1.0.6'
+//    implementation 'com.github.itxiaox.net:http:1.0.6'
 //    implementation 'com.github.itxiaox.net:retrofit:1.0.4'
 //    implementation project(":retrofit")
     implementation 'com.orhanobut:logger:2.2.0'

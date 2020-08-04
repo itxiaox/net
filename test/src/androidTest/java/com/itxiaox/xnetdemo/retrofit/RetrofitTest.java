@@ -12,19 +12,15 @@ import com.itxiaox.retrofit.HttpConfig;
 import com.itxiaox.retrofit.HttpManager;
 import com.itxiaox.xnetdemo.DownloadService;
 import com.itxiaox.xnetdemo.WXAPIService;
-import com.itxiaox.xnetdemo.WXAPIService2;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.FormatStrategy;
 import com.orhanobut.logger.Logger;
 import com.orhanobut.logger.PrettyFormatStrategy;
-
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.Executors;
-
 import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
@@ -32,9 +28,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
-import static org.junit.Assert.assertEquals;
-
 
 public class RetrofitTest {
 
@@ -58,7 +51,7 @@ public class RetrofitTest {
         //默认简单调用方式, 在Application#onCreate方法中调用
 //        HttpManager.initClient(baseUrl,true);
         //第二种方式
-//        method2();
+        method2();
     }
 
     private void method2() {

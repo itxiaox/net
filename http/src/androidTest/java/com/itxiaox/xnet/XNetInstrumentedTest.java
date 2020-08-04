@@ -6,14 +6,14 @@ import android.util.Log;
 import androidx.test.InstrumentationRegistry;
 import androidx.test.runner.AndroidJUnit4;
 
-import com.itxiaox.xnet.base.HttpCallback;
-import com.itxiaox.xnet.base.HttpFactory;
-import com.itxiaox.xnet.base.HttpLogger;
-import com.itxiaox.xnet.base.HttpManager;
-import com.itxiaox.xnet.base.HttpParams;
-import com.itxiaox.xnet.okhttp.NetworkStateInterceptor;
-import com.itxiaox.xnet.retrofit.RetrofitConfig;
-import com.itxiaox.xnet.utils.Utils;
+import com.itxiaox.http.base.HttpCallback;
+import com.itxiaox.http.base.HttpFactory;
+import com.itxiaox.http.base.HttpLogger;
+import com.itxiaox.http.base.HttpManager;
+import com.itxiaox.http.base.HttpParams;
+import com.itxiaox.http.okhttp.NetworkStateInterceptor;
+import com.itxiaox.http.retrofit.RetrofitConfig;
+import com.itxiaox.http.utils.Utils;
 
 import org.junit.Before;
 import org.junit.Test;
