@@ -2,11 +2,11 @@ apply plugin: 'java-library'
 
 dependencies {
     //retrofit
-    api 'com.squareup.retrofit2:retrofit:2.4.0'
+    api 'com.squareup.retrofit2:retrofit:2.9.0'
     //okhttp3 logging
     api 'com.squareup.okhttp3:logging-interceptor:3.5.0'
     //gson converter
-    api 'com.squareup.retrofit2:converter-gson:2.0.2'
+    api 'com.squareup.retrofit2:converter-gson:2.9.0'
 }
 tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"

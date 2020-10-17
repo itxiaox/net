@@ -26,7 +26,6 @@ public class HttpTest {
 
     @Test
     public void useAppContext() {
-        // Context of the app under test.
         appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
     }
 
@@ -38,7 +37,6 @@ public class HttpTest {
         HttpFactory.init(appContext, baseUrl, HttpFactory.HttpManagerType.OKHTTP);
         httpManager = HttpFactory.getHttpManager();
     }
-
 
     private void initLog() {
         FormatStrategy formatStrategy = PrettyFormatStrategy.newBuilder()
@@ -54,11 +52,12 @@ public class HttpTest {
 
     @Test
     public void testRetrofit() {
+
         String url = "/wxarticle/chapters/json";
         httpManager.get(url, null, new HttpCallback<String>() {
             @Override
             public void onSuccess(String response) {
-                String result = response;
+//                String result = response;
                 Logger.d(response);
             }
 
