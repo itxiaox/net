@@ -7,7 +7,7 @@ import retrofit2.http.Streaming;
 import retrofit2.http.Url;
 
 public interface WXAPIService2 {
-    @GET("/ITPages/api/userinfo.json")
-    Call<ResponseBody>  getUserInfo();
+    @GET("/index.php?tn=monline_5_dg")
+    Call<ResponseBody> getPage();
 
 }

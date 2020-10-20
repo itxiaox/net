@@ -4,6 +4,7 @@ package com.itxiaox.xnetdemo.retrofit;
 import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
+
 import androidx.test.platform.app.InstrumentationRegistry;
 import com.itxiaox.retrofit.DownLoadUtils;
 import com.itxiaox.retrofit.DownloadListener;
@@ -12,6 +13,7 @@ import com.itxiaox.retrofit.HttpConfig;
 import com.itxiaox.retrofit.HttpManager;
 import com.itxiaox.xnetdemo.DownloadService;
 import com.itxiaox.xnetdemo.WXAPIService;
+import com.itxiaox.xnetdemo.WXAPIService2;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.FormatStrategy;
 import com.orhanobut.logger.Logger;
@@ -33,6 +35,7 @@ public class RetrofitTest {
 
     private static final String TAG = "RetrofitTest";
     String baseUrl ;
+    String baseUrl2 ;
     private WXAPIService wxapiService;
     private Context appContext;
 
@@ -44,17 +47,20 @@ public class RetrofitTest {
 
     @Before
     public void init(){
-//         baseUrl = "https://itxiaox.github.io";
-         baseUrl = "https://www.wanandroid.com";
+        baseUrl = "https://www.wanandroid.com";
+        baseUrl2 = "https://www.baidu.com";
+//        https://itxiaox.github.io/ITPages/api/userinfo.json
+//        /index.php?tn=monline_5_dg
         initLog();
         //============方式一 默认配置========
         //默认简单调用方式, 在Application#onCreate方法中调用
-//        HttpManager.initClient(baseUrl,true);
+        HttpManager.initClient(baseUrl,true);
         //第二种方式
-        method2();
+//        singleMethod2();
+//        multiMethod2();
     }
 
-    private void method2() {
+    private void singleMethod2() {
         //============方式二 灵活配置========
 //        添加日志拦截器
         HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
@@ -78,6 +84,41 @@ public class RetrofitTest {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         HttpManager.initClient(httpConfig);
+
+    }
+
+    private void multiMethod2() {
+        //============方式二 灵活配置========
+//        添加日志拦截器
+        HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
+            @Override
+            public void log(String message) {
+//                Log.d(TAG, "log:"+message);
+
+                Logger.e(message);
+            }
+        });
+        logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        //添加通用的请求参数，放到heaader中
+//        HeadersInterceptor headersInterceptor = new HeadersInterceptor.Builder()
+//                .addHeaderParam("Content-Type","")
+//                .addHeaderParam("Accept","application/json")
+//                .build();
+        HttpConfig httpConfig = new HttpConfig.Builder()
+                .baseUrl(baseUrl)
+                //               .addInterceptor(headersInterceptor)
+                .addInterceptor(logInterceptor)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        HttpConfig httpConfig2 = new HttpConfig.Builder()
+                .baseUrl(baseUrl2)
+                //               .addInterceptor(headersInterceptor)
+                .addInterceptor(logInterceptor)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        HttpManager.initMultiClient(httpConfig);
+        HttpManager.initMultiClient(httpConfig2);
+
     }
 
     private void initLog() {
@@ -94,7 +135,6 @@ public class RetrofitTest {
 
     @Test
     public void testRetrofit(){
-
         wxapiService = HttpManager.createWebService(WXAPIService.class);
         wxapiService.getWXArticle().enqueue(new Callback<ResponseBody>() {
             @Override
@@ -113,6 +153,72 @@ public class RetrofitTest {
                 System.out.println("fail:"+t);
             }
         });
+    }
+    @Test
+    public void test2Retrofit(){
+        WXAPIService2  wxapiService = HttpManager.createWebService(WXAPIService2.class);
+        wxapiService.getPage().enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    String result = response.body().string();
+                    Logger.d(result);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Logger.i("onResponse exception:"+e.getMessage());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                System.out.println("fail:"+t);
+            }
+        });
+    }
+
+
+    @Test
+    public void testMultiRetrofit(){
+        WXAPIService wxapiService = HttpManager.createMultiWebService(WXAPIService.class,baseUrl);
+        WXAPIService2 wxapiService2 = HttpManager.createMultiWebService(WXAPIService2.class,baseUrl2);
+        wxapiService.getWXArticle().enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    String result = response.body().string();
+                    Log.i(TAG, "onResponse: testMultiRetrofit-getWXArticle: "+result);
+                    Logger.json(result);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Logger.i("onResponse exception:"+e.getMessage());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                System.out.println("fail:"+t);
+                Log.i(TAG, "onResponse: testMultiRetrofit-getWXArticle onFailure: "+t.getMessage());
+            }
+        });
+        wxapiService2.getPage().enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    String result = response.body().string();
+                    Log.i(TAG, "onResponse: testMultiRetrofit-getUserInfo: "+result);
+                    Logger.json(result);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Logger.i("onResponse exception:"+e.getMessage());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.i(TAG, "onResponse: testMultiRetrofit-getUserInfo onFailure: "+t.getMessage());
+            }
+        });
+
     }
 
     @Test

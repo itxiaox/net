@@ -34,10 +34,10 @@ dependencies {
     implementation project(":http")
 //    implementation 'com.github.itxiaox.net:retrofit:1.0.3'
 //    implementation 'com.github.itxiaox:retrofit:1.0.4'
-    implementation 'com.github.itxiaox.net:retrofit:1.0.6'
+//    implementation 'com.github.itxiaox.net:retrofit:1.0.6'
 //    implementation 'com.github.itxiaox.net:http:1.0.6'
 //    implementation 'com.github.itxiaox.net:retrofit:1.0.4'
-//    implementation project(":retrofit")
+    implementation project(":retrofit")
     implementation 'com.orhanobut:logger:2.2.0'
 //    //gson converter
 //    implementation 'com.squareup.retrofit2:converter-gson:2.0.2'
