@@ -84,6 +84,7 @@ public class HttpClient {
         if (httpConfig.getConnectionPool()!=null){
             builder.connectionPool(httpConfig.getConnectionPool());
         }
+        builder.retryOnConnectionFailure(httpConfig.isRetryOnConnectionFailure());
         return builder.build();
     }
 }

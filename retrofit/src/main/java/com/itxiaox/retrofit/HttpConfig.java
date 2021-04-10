@@ -44,6 +44,11 @@ public class HttpConfig {
 
     private ConnectionPool connectionPool;
 
+    /**
+     * 添加连接重试控制
+     */
+    private boolean retryOnConnectionFailure;
+
     private List<Interceptor> interceptors;
     private List<Converter.Factory> converterFactories;
     private List<CallAdapter.Factory> adapterFactories;
@@ -74,6 +79,9 @@ public class HttpConfig {
         return connectionPool;
     }
 
+    public boolean isRetryOnConnectionFailure() {
+        return retryOnConnectionFailure;
+    }
 
     /**
      * 获取base_url
@@ -161,6 +169,8 @@ public class HttpConfig {
         this.readTimeUnit = builder.readTimeUnit;
         this.writeTimeout = builder.writeTimeout;
         this.writeTimeUnit = builder.writeTimeUnit;
+        this.connectionPool = builder.connectionPool;
+        this.retryOnConnectionFailure = builder.retryOnConnectionFailure;
         interceptors = new ArrayList<>(builder.interceptors);
         converterFactories = new ArrayList<>(builder.converterFactories);
         adapterFactories = new ArrayList<>(builder.adapterFactories);
@@ -192,6 +202,7 @@ public class HttpConfig {
 
         private ConnectionPool connectionPool;
 
+        private  boolean retryOnConnectionFailure = true;
         private List<Interceptor> interceptors = new ArrayList<>();
         private List<Converter.Factory> converterFactories = new ArrayList<>();
         private List<CallAdapter.Factory> adapterFactories = new ArrayList<>();
@@ -210,6 +221,15 @@ public class HttpConfig {
             return this;
         }
 
+        /**
+         * 设置失败重连
+         * @param retryOnConnectionFailure  是否失败重连
+         * @return HttpConfig
+         */
+        public Builder retryOnConnectionFailure(boolean retryOnConnectionFailure){
+            this.retryOnConnectionFailure = retryOnConnectionFailure;
+            return this;
+        }
         /**
          * 设置连接超时时间
          *
