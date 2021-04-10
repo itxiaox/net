@@ -2,6 +2,10 @@ package com.itxiaox.retrofit;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+import java.util.regex.Pattern;
+
+import okhttp3.HttpUrl;
 
 /**
  * Http请求管理类
@@ -11,6 +15,7 @@ public class HttpManager {
     private static HttpClient httpClient;
     private static Map<String, HttpClient> httpClientMap;
 
+
     /**
      * 初始化一个默认HttpClient
      * 多次设置会重新创建HttpClient对象,相当于baseUrl重置
@@ -19,6 +24,9 @@ public class HttpManager {
      * @return
      */
     public static HttpClient initClient(String baseUrl,boolean logger){
+        if (!isHttpUrl(baseUrl)){
+            throw new IllegalArgumentException("无效的baseUrl");
+        }
         httpClient = new HttpClient(baseUrl,logger);
         return httpClient;
     }
@@ -28,7 +36,10 @@ public class HttpManager {
      * @param httpConfig
      * @return
      */
-    public static HttpClient initClient(HttpConfig httpConfig){
+    public static HttpClient initClient(HttpConfig httpConfig) {
+        if (!isHttpUrl(httpConfig.getBaseUrl())){
+            throw new IllegalArgumentException("无效的baseUrl");
+        }
         httpClient = new HttpClient(httpConfig);
         return httpClient;
     }
@@ -41,6 +52,9 @@ public class HttpManager {
      * @return
      */
     public static HttpClient initMultiClient(String baseUrl,boolean logger){
+        if (!isHttpUrl(baseUrl)){
+            throw new IllegalArgumentException("无效的baseUrl");
+        }
         if (httpClientMap == null) {
             httpClientMap = new HashMap<>();
         }
@@ -69,6 +83,9 @@ public class HttpManager {
      * @return
      */
     public static HttpClient initMultiClient(HttpConfig httpConfig){
+        if(!isHttpUrl(httpConfig.getBaseUrl())){
+            throw new IllegalArgumentException("无效的baseUrl");
+        }
         if (httpClientMap == null) {
             httpClientMap = new HashMap<>();
         }
@@ -79,40 +96,6 @@ public class HttpManager {
         return httpClient;
     }
 
-    /**
-     * 重置BaseUrl
-     * 适用于在APP中重新设置BaseUrl的情况
-     * @param baseUrl 重新设置的baseUrl
-     * @param logger 是否开启日志
-     * @return
-     */
-//    public static HttpClient resetClient(String baseUrl,boolean logger){
-//        httpClient = null;
-//        if (httpClientMap!=null){
-//            httpClientMap.remove(baseUrl);
-//        }
-//        return initClient(baseUrl,logger);
-//    }
-//    /**
-//     * 重置BaseUrl
-//     * 适用于在APP中重新设置BaseUrl的情况
-//     * @param httpConfig 重新配置
-//     * @return
-//     */
-//    public static HttpClient resetClient(HttpConfig httpConfig){
-//        httpClient = null;
-//        if (httpClientMap!=null){
-//            httpClientMap.remove(httpConfig.getBaseUrl());
-//        }
-//        return initClient(httpConfig);
-//    }
-
-    /**
-     * 获取WebServices, 仅适用于单个的客户端
-     * @param clazz webServices类型
-     * @param <T>
-     * @return
-     */
     public static <T> T  createWebService(Class<T> clazz) {
         if(httpClient==null){
             throw new NullPointerException("HttpClient in null , call initClient() first,please");
@@ -143,6 +126,9 @@ public class HttpManager {
      * @return
      */
     public static HttpClient initNewHttpClient(HttpConfig httpConfig){
+        if (!isHttpUrl(httpConfig.getBaseUrl())){
+            throw new IllegalArgumentException("无效的baseUrl");
+        }
         if (newHttpClient==null){
             newHttpClient = new HttpClient(httpConfig);
         }
@@ -153,7 +139,10 @@ public class HttpManager {
      * @param baseUrl
      * @return
      */
-    public static HttpClient initNewHttpClient(String baseUrl, boolean logger){
+    public static HttpClient initNewHttpClient(String baseUrl, boolean logger) throws Exception{
+        if (!isHttpUrl(baseUrl)){
+            throw new IllegalArgumentException("无效的baseUrl");
+        }
         if (newHttpClient==null){
             newHttpClient = new HttpClient(baseUrl,logger);
         }
@@ -173,71 +162,24 @@ public class HttpManager {
     }
 
 
-//    /**
-//     * 适用于多个baseUrl并行的情况
-//     * @param clazz WebService类
-//     * @param baseUrl baseUrl
-//     * @param type httpClient类型： SINGLE:单baseUrl, MULTIPLE: 多baseUrl
-//     * @param <T> WebService类型
-//     * @return
-//     */
-//    public static <T> T  createWebService(Class<T> clazz,String baseUrl, HttpClientType type) {
-//        HttpClient httpClient = null;
-//        if (httpClientMap != null) {
-//            httpClient = httpClientMap.get(baseUrl);
-//        }
-//        if (httpClient == null) {
-//            httpClient = new HttpClient(baseUrl,true);
-//            if (httpClient == null) {
-//                throw new NullPointerException("HttpManager create fail !!1");
-//            }
-//            if (HttpClientType.SINGLE == type) {
-//                return httpClient.create(clazz);
-//            } else if (HttpClientType.MULTIPLE == type) {
-//                if (httpClientMap == null) {
-//                    httpClientMap = new HashMap<>();
-//                }
-//                httpClientMap.put(baseUrl, httpClient);
-//            } else {
-//                throw new IllegalArgumentException("Invalid type type=SINGLE/MULTIPLE");
-//            }
-//
-//        }
-//        return httpClient.create(clazz);
-//    }
-//    /**
-//     * 适用于多个baseUrl并行的情况
-//     * @param clazz WebService类
-//     * @param httpConfig httpConfig
-//     * @param type httpClient类型： SINGLE:单baseUrl, MULTIPLE: 多baseUrl
-//     * @param <T> WebService类型
-//     * @return
-//     */
-//    public static <T> T  createWebService(Class<T> clazz,HttpConfig httpConfig, HttpClientType type) {
-//        HttpClient httpManager = null;
-//        if (httpClientMap != null) {
-//            httpManager = httpClientMap.get(httpConfig.getBaseUrl());
-//        }
-//        if (httpManager == null) {
-//            httpManager = new HttpClient(httpConfig);
-//            if (httpManager == null) {
-//                throw new NullPointerException("HttpManager create fail !!1");
-//            }
-//            if (HttpClientType.SINGLE == type) {
-//                return httpManager.create(clazz);
-//            } else if (HttpClientType.MULTIPLE == type) {
-//                if (httpClientMap == null) {
-//                    httpClientMap = new HashMap<>();
-//                }
-//                httpClientMap.put(httpConfig.getBaseUrl(), httpManager);
-//            } else {
-//                throw new IllegalArgumentException("Invalid type type=SINGLE/MULTIPLE");
-//            }
-//
-//        }
-//        return httpManager.create(clazz);
-//    }
 
+    public static boolean isHttpUrl(String url){
+        HttpUrl httpUrl;
+        if (url==null||url.equals("")){
+            throw new NullPointerException("url is null");
+        }
+        try{
+            httpUrl = HttpUrl.get(url);
+            return httpUrl!=null;
+        }catch(Exception e){
+            throw new IllegalArgumentException(e);
+        }
+    }
 
+    public static boolean isUrl(String url){
+        String regex = "^([hH][tT]{2}[pP]:/*|[hH][tT]{2}[pP][sS]:/*|[fF][tT][pP]:/*)(([A-Za-z0-9-~]+).)+([A-Za-z0-9-~\\/])+(\\?{0,1}(([A-Za-z0-9-~]+\\={0,1})([A-Za-z0-9-~]*)\\&{0,1})*)$";
+        Pattern pattern = Pattern.compile(regex);
+        return pattern.matcher(url).matches();
+    }
 
 }

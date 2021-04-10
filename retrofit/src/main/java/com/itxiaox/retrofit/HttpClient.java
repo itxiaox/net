@@ -5,6 +5,7 @@ import com.itxiaox.retrofit.Utils.HttpsUtils;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.ConnectionPool;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import retrofit2.CallAdapter;
@@ -24,7 +25,7 @@ public class HttpClient {
         this.retrofit = newRetrofit();
     }
 
-    public HttpClient(String baseUrl,boolean logger){
+    public HttpClient(String baseUrl,boolean logger) {
         HttpConfig httpConfig =  HttpConfig.createDefault(baseUrl, logger);
         this.httpConfig = httpConfig;
         this.retrofit = newRetrofit();
@@ -36,7 +37,7 @@ public class HttpClient {
 
     private Retrofit newRetrofit(){
         Retrofit.Builder builder = new Retrofit.Builder();
-        builder.baseUrl(httpConfig.getBaseUrl());
+            builder.baseUrl(httpConfig.getBaseUrl());
         // 设置转换器
         List<Converter.Factory> converterFactories = httpConfig.getConverterFactories();
         if (converterFactories != null && !converterFactories.isEmpty()) {
@@ -58,7 +59,9 @@ public class HttpClient {
 
     private OkHttpClient newOkHttpClient() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        builder.connectTimeout(httpConfig.getConnectTimeoutMilliseconds(), TimeUnit.MILLISECONDS);
+        builder.connectTimeout(httpConfig.getConnectTimeout(), httpConfig.getConnectTimeUnit());
+        builder.readTimeout(httpConfig.getReadTimeout(),httpConfig.getReadTimeUnit());
+        builder.writeTimeout(httpConfig.getReadTimeout(),httpConfig.getWriteTimeUnit());
         //添加Https支持
         //方法一
         //信任所有服务器地址,这里直接返回true也是信任了所有证书
@@ -77,7 +80,10 @@ public class HttpClient {
                 builder.addInterceptor(interceptor);
             }
         }
-
+        //添加下载线程池配置，解决大批量的图片下载，线程数量过多的时候，造成socket超时问题
+        if (httpConfig.getConnectionPool()!=null){
+            builder.connectionPool(httpConfig.getConnectionPool());
+        }
         return builder.build();
     }
 }

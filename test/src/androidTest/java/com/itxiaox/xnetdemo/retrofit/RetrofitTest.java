@@ -18,6 +18,8 @@ import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.FormatStrategy;
 import com.orhanobut.logger.Logger;
 import com.orhanobut.logger.PrettyFormatStrategy;
+
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import java.io.File;
@@ -45,22 +47,32 @@ public class RetrofitTest {
         appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
     }
 
+    @Test
+    public void testIsUrl(){
+        Assert.assertTrue(HttpManager.isUrl("http://192.444.23.12"));
+    }
     @Before
     public void init(){
-        baseUrl = "https://www.wanandroid.com";
+        baseUrl = "sfdsfhttps:////sswww.wanandroid.com";
         baseUrl2 = "https://www.baidu.com";
 //        https://itxiaox.github.io/ITPages/api/userinfo.json
 //        /index.php?tn=monline_5_dg
         initLog();
         //============方式一 默认配置========
         //默认简单调用方式, 在Application#onCreate方法中调用
-        HttpManager.initClient(baseUrl,true);
+        try{
+            HttpManager.initClient(baseUrl,true);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+
         //第二种方式
 //        singleMethod2();
 //        multiMethod2();
     }
 
-    private void singleMethod2() {
+    private void singleMethod2() throws Exception{
         //============方式二 灵活配置========
 //        添加日志拦截器
         HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
@@ -87,7 +99,7 @@ public class RetrofitTest {
 
     }
 
-    private void multiMethod2() {
+    private void multiMethod2() throws Exception{
         //============方式二 灵活配置========
 //        添加日志拦截器
         HttpLoggingInterceptor logInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
@@ -221,56 +233,56 @@ public class RetrofitTest {
 
     }
 
-    @Test
-    public void testRetrofit2(){
-        StringBuffer buffer = new StringBuffer();
+//    @Test
+//    public void testRetrofit2(){
+//        StringBuffer buffer = new StringBuffer();
+////
+//        String baseUrl = "https://www.wanandroid.com";
+//        WXAPIService wxapiService = HttpManager.createWebService(WXAPIService.class,baseUrl,
+//                HttpClientType.MULTIPLE);
+//        buffer.append("===="+baseUrl+"====");
+//        wxapiService.getWXArticle().enqueue(new Callback<ResponseBody>() {
+//            @Override
+//            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+//                try {
+//                    String result = response.body().string();
+//                    Logger.i("onResponse result:"+result);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                    Logger.i("onResponse exception:"+e.getMessage());
+//                }
+//            }
 //
-        String baseUrl = "https://www.wanandroid.com";
-        WXAPIService wxapiService = HttpManager.createWebService(WXAPIService.class,baseUrl,
-                HttpClientType.MULTIPLE);
-        buffer.append("===="+baseUrl+"====");
-        wxapiService.getWXArticle().enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    String result = response.body().string();
-                    Logger.i("onResponse result:"+result);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    Logger.i("onResponse exception:"+e.getMessage());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Logger.d("fail:"+t);
-            }
-        });
-
-        String baseUrl2 = "https://itxiaox.github.io";
-        WXAPIService wxapiService2 = HttpManager.createWebService(WXAPIService.class,baseUrl,
-                HttpClientType.MULTIPLE);
-        buffer.append("===="+baseUrl2+"====");
-        wxapiService2.getWXArticle().enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    String result = response.body().string();
-                    Logger.i("onResponse exception:"+result);
-//                    Logger.json(result);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    Logger.i("onResponse exception:"+e.getMessage());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Logger.d("onResponse fail:"+t);
-            }
-        });
-    }
-
+//            @Override
+//            public void onFailure(Call<ResponseBody> call, Throwable t) {
+//                Logger.d("fail:"+t);
+//            }
+//        });
+//
+//        String baseUrl2 = "https://itxiaox.github.io";
+//        WXAPIService wxapiService2 = HttpManager.createWebService(WXAPIService.class,baseUrl,
+//                HttpClientType.MULTIPLE);
+//        buffer.append("===="+baseUrl2+"====");
+//        wxapiService2.getWXArticle().enqueue(new Callback<ResponseBody>() {
+//            @Override
+//            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+//                try {
+//                    String result = response.body().string();
+//                    Logger.i("onResponse exception:"+result);
+////                    Logger.json(result);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                    Logger.i("onResponse exception:"+e.getMessage());
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ResponseBody> call, Throwable t) {
+//                Logger.d("onResponse fail:"+t);
+//            }
+//        });
+//    }
+//
 
     @Test
     public void testDownload(){

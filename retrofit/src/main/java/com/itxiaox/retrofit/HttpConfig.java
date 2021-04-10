@@ -2,7 +2,9 @@ package com.itxiaox.retrofit;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import okhttp3.ConnectionPool;
 import okhttp3.Interceptor;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.CallAdapter;
@@ -12,27 +14,48 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * 配置Http请求相关参数
  *
- *<P>
+ * <p>
  * 默认: </br>
  * timeout = 60s;
- *  .addConverterFactory(GsonConverterFactory.create())
- *</P>
+ * .addConverterFactory(GsonConverterFactory.create())
+ * </P>
  */
 public class HttpConfig {
 
     private String baseUrl;
-    private long connectTimeoutMilliseconds;
+    /**
+     * 读取超时
+     */
+    private long readTimeout;
+    private TimeUnit readTimeUnit;
+    /**
+     * 写超时
+     */
+    private long writeTimeout;
+    private TimeUnit writeTimeUnit;
+    /**
+     * 连接超时
+     */
+    private long connectTimeout;
+    private TimeUnit connectTimeUnit;
+    /**
+     * 等待时间单位
+     */
+
+    private ConnectionPool connectionPool;
+
     private List<Interceptor> interceptors;
     private List<Converter.Factory> converterFactories;
     private List<CallAdapter.Factory> adapterFactories;
 
-    private static final long DEFAULT_CONNECT_TIMEOUT = 60 * 1000;
+    private static final long DEFAULT_CONNECT_TIMEOUT = 30 * 1000;
 
 
     /**
      * 默认配置，timeout = 15s，
+     *
      * @param baseUrl base_url
-     * @param logger 是否开启日志
+     * @param logger  是否开启日志
      * @return 返回默认的Http配置
      */
     public static HttpConfig createDefault(String baseUrl, boolean logger) {
@@ -42,13 +65,19 @@ public class HttpConfig {
                     .setLevel(HttpLoggingInterceptor.Level.BODY));
         }
         return builder.baseUrl(baseUrl)
-                .connectTimeoutMilliseconds(DEFAULT_CONNECT_TIMEOUT)
+                .connectTimeoutMilliseconds(DEFAULT_CONNECT_TIMEOUT, TimeUnit.MILLISECONDS)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }
 
+    public ConnectionPool getConnectionPool() {
+        return connectionPool;
+    }
+
+
     /**
      * 获取base_url
+     *
      * @return base_url
      */
     public String getBaseUrl() {
@@ -56,15 +85,49 @@ public class HttpConfig {
     }
 
     /**
-     * 获取超时时间，单位ms
-     * @return 超时时间
+     * 获取读取超时时间
+     *
+     * @return
      */
-    public long getConnectTimeoutMilliseconds() {
-        return connectTimeoutMilliseconds;
+    public long getReadTimeout() {
+        return readTimeout;
+    }
+
+    /**
+     * 读取写超时时间
+     *
+     * @return
+     */
+    public long getWriteTimeout() {
+        return writeTimeout;
+    }
+
+    public TimeUnit getReadTimeUnit() {
+        return readTimeUnit;
+    }
+
+
+    public TimeUnit getWriteTimeUnit() {
+        return writeTimeUnit;
+    }
+
+
+    public TimeUnit getConnectTimeUnit() {
+        return connectTimeUnit;
+    }
+
+    /**
+     * 获取连接超时时间
+     *
+     * @return
+     */
+    public long getConnectTimeout() {
+        return connectTimeout;
     }
 
     /**
      * 获取拦截器
+     *
      * @return 拦截器
      */
     public List<Interceptor> getInterceptors() {
@@ -73,14 +136,17 @@ public class HttpConfig {
 
     /**
      * Get ConverterFactories
+     *
      * @return ConverterFactories
      */
 
     public List<Converter.Factory> getConverterFactories() {
         return converterFactories;
     }
+
     /**
      * Get AdapterFactories
+     *
      * @return AdapterFactories
      */
     public List<CallAdapter.Factory> getAdapterFactories() {
@@ -89,10 +155,15 @@ public class HttpConfig {
 
     private HttpConfig(Builder builder) {
         baseUrl = builder.baseUrl;
-        connectTimeoutMilliseconds = builder.connectTimeoutMilliseconds;
+        this.connectTimeout = builder.connectTimeout;
+        this.connectTimeUnit = builder.connectTimeUnit;
+        this.readTimeout = builder.readTimeout;
+        this.readTimeUnit = builder.readTimeUnit;
+        this.writeTimeout = builder.writeTimeout;
+        this.writeTimeUnit = builder.writeTimeUnit;
         interceptors = new ArrayList<>(builder.interceptors);
         converterFactories = new ArrayList<>(builder.converterFactories);
-        adapterFactories = new ArrayList<>( builder.adapterFactories);
+        adapterFactories = new ArrayList<>(builder.adapterFactories);
     }
 
     /**
@@ -100,7 +171,27 @@ public class HttpConfig {
      */
     public static final class Builder {
         private String baseUrl;
-        private long connectTimeoutMilliseconds;
+        /**
+         * 读取超时
+         */
+        private long readTimeout;
+        private TimeUnit readTimeUnit;
+        /**
+         * 写超时
+         */
+        private long writeTimeout;
+        private TimeUnit writeTimeUnit;
+        /**
+         * 连接超时
+         */
+        private long connectTimeout;
+        private TimeUnit connectTimeUnit;
+        /**
+         * 等待时间单位
+         */
+
+        private ConnectionPool connectionPool;
+
         private List<Interceptor> interceptors = new ArrayList<>();
         private List<Converter.Factory> converterFactories = new ArrayList<>();
         private List<CallAdapter.Factory> adapterFactories = new ArrayList<>();
@@ -120,13 +211,44 @@ public class HttpConfig {
         }
 
         /**
-         * 设置超时时间
+         * 设置连接超时时间
          *
          * @param time timeout, 单位毫秒
          * @return the builder
          */
-        public Builder connectTimeoutMilliseconds(long time) {
-            connectTimeoutMilliseconds = time;
+        public Builder connectTimeoutMilliseconds(long time, TimeUnit timeUnit) {
+            connectTimeout = time;
+            connectTimeUnit = timeUnit;
+            return this;
+        }
+
+
+        /**
+         * 设置读取超时时间
+         *
+         * @param time
+         * @return
+         */
+        public Builder readTimeoutMilliseconds(long time, TimeUnit timeUnit) {
+            readTimeout = time;
+            readTimeUnit = timeUnit;
+            return this;
+        }
+
+        /**
+         * 设置写超时时间
+         *
+         * @param time
+         * @return
+         */
+        public Builder writeTimeoutMilliseconds(long time, TimeUnit timeUnit) {
+            writeTimeout = time;
+            writeTimeUnit = timeUnit;
+            return this;
+        }
+
+        public Builder connectionPool(ConnectionPool connectionPool){
+            this.connectionPool = connectionPool;
             return this;
         }
 
@@ -143,6 +265,7 @@ public class HttpConfig {
 
         /**
          * 添加 convert factory 转换器， 默认使用GsonFactory
+         *
          * @param factory the factory
          * @return the builder
          */
@@ -151,9 +274,11 @@ public class HttpConfig {
             converterFactories.add(factory);
             return this;
         }
+
         /**
          * 添加Adapter factory转换器
          * Add call adapter factory builder.
+         *
          * @param factory the factory
          * @return the builder
          */
@@ -164,19 +289,13 @@ public class HttpConfig {
 
         /**
          * 创建  HttpConfig
+         *
          * @return HttpConfig实例
          */
         public HttpConfig build() {
             return new HttpConfig(this);
         }
     }
-
-
-//    public static HttpConfig createDefault(String baseUrl,boolean logger){
-
-
-//
-//    }
 
 
 }
