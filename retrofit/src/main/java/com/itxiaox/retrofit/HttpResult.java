@@ -2,7 +2,7 @@ package com.itxiaox.retrofit;
 
 /**
  * 统一封装返回数据格式
- * @param <T>
+ * @param <T> 请求结果数据类型
  */
 public class HttpResult<T> {
     /**

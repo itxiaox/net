@@ -29,13 +29,12 @@ apply from : "../publishJavaLib.gradle"
 //                    // 自定义项目名称
 //                    artifactId 'retrofit'
 //                    // 项目版本号
-//                    version '1.0.4'
+//                    version '1.0.9'
 //                }
 //                // 自定义本地仓库路径，此处是项目根目录下的 repo 目录中
 ////            repository(url: uri("../repo"))
 //                repository(url: uri("F:/maven/repo"))
 //            }
 //        }
-//    }
 //}
 //

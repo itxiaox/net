@@ -15,7 +15,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * 配置Http请求相关参数
  *
  * <p>
- * 默认: </br>
+ * 默认:
  * timeout = 60s;
  * .addConverterFactory(GsonConverterFactory.create())
  * </P>
@@ -87,7 +87,7 @@ public class HttpConfig {
     /**
      * 获取读取超时时间
      *
-     * @return
+     * @return 超时时间
      */
     public long getReadTimeout() {
         return readTimeout;
@@ -96,7 +96,7 @@ public class HttpConfig {
     /**
      * 读取写超时时间
      *
-     * @return
+     * @return 读取超时时间
      */
     public long getWriteTimeout() {
         return writeTimeout;
@@ -119,7 +119,7 @@ public class HttpConfig {
     /**
      * 获取连接超时时间
      *
-     * @return
+     * @return 连接超时时间
      */
     public long getConnectTimeout() {
         return connectTimeout;
@@ -203,7 +203,7 @@ public class HttpConfig {
          * 设置base_url
          *
          * @param url baseUrl
-         * @return
+         * @return 请求地址
          */
         public Builder baseUrl(String url) {
             baseUrl = url;
@@ -214,6 +214,7 @@ public class HttpConfig {
          * 设置连接超时时间
          *
          * @param time timeout, 单位毫秒
+         * @param timeUnit 单位
          * @return the builder
          */
         public Builder connectTimeoutMilliseconds(long time, TimeUnit timeUnit) {
@@ -226,8 +227,9 @@ public class HttpConfig {
         /**
          * 设置读取超时时间
          *
-         * @param time
-         * @return
+         * @param time 超时时间
+         * @param timeUnit  单位
+         * @return httpConfig对象
          */
         public Builder readTimeoutMilliseconds(long time, TimeUnit timeUnit) {
             readTimeout = time;
@@ -238,8 +240,9 @@ public class HttpConfig {
         /**
          * 设置写超时时间
          *
-         * @param time
-         * @return
+         * @param time 超时时间
+         * @param timeUnit  单位
+         * @return httpConfig对象
          */
         public Builder writeTimeoutMilliseconds(long time, TimeUnit timeUnit) {
             writeTimeout = time;

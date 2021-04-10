@@ -19,9 +19,9 @@ public class HttpManager {
     /**
      * 初始化一个默认HttpClient
      * 多次设置会重新创建HttpClient对象,相当于baseUrl重置
-     * @param baseUrl
-     * @param logger
-     * @return
+     * @param baseUrl url
+     * @param logger 是否开启日志
+     * @return  HttpClient
      */
     public static HttpClient initClient(String baseUrl,boolean logger){
         if (!isHttpUrl(baseUrl)){
@@ -33,8 +33,8 @@ public class HttpManager {
     /**
      *  根据配置初始化一个HttpClient
      *  多次设置会重新创建HttpClient对象,相当于baseUrl重置
-     * @param httpConfig
-     * @return
+     * @param httpConfig httpConfig
+     * @return HttpClient
      */
     public static HttpClient initClient(HttpConfig httpConfig) {
         if (!isHttpUrl(httpConfig.getBaseUrl())){
@@ -47,9 +47,9 @@ public class HttpManager {
      * 创建多个baseUrl客户端
      * 一个baseUrl对应一个HttpClient客户端
      *
-     * @param baseUrl
-     * @param logger
-     * @return
+     * @param baseUrl baseUrl
+     * @param logger 日志
+     * @return HttpClient
      */
     public static HttpClient initMultiClient(String baseUrl,boolean logger){
         if (!isHttpUrl(baseUrl)){
@@ -79,8 +79,8 @@ public class HttpManager {
     /**
      * 初始化多baseUrl客户端
      * 一个baseUrl对应一个HttpClient客户端
-     * @param httpConfig
-     * @return
+     * @param httpConfig HttpConfig
+     * @return HttpClient
      */
     public static HttpClient initMultiClient(HttpConfig httpConfig){
         if(!isHttpUrl(httpConfig.getBaseUrl())){
@@ -107,8 +107,9 @@ public class HttpManager {
     /**
      * 获取WebServices, 适用于多个baseUrl的客户端,
      * @param clazz webServices类型
-     * @param <T>
-     * @return
+     * @param <T> WebServices
+     * @param baseUrl baseUrl
+     * @return WebServices
      */
     public static <T> T  createMultiWebService(Class<T> clazz,String baseUrl) {
         HttpClient httpClient = httpClientMap.get(baseUrl);
@@ -122,8 +123,8 @@ public class HttpManager {
     private static HttpClient newHttpClient;
     /**
      * 创建一个HttpClient, 用于一种特殊情况，同一个baseUrl，对应两个，HttpClient的情况，但是需要实例化的OKHttpClient不同
-     * @param httpConfig
-     * @return
+     * @param httpConfig httpConfig
+     * @return HttpClient
      */
     public static HttpClient initNewHttpClient(HttpConfig httpConfig){
         if (!isHttpUrl(httpConfig.getBaseUrl())){
@@ -136,8 +137,10 @@ public class HttpManager {
     }
     /**
      * 创建一个HttpClient, 用于一种特殊情况，同一个baseUrl，对应两个，HttpClient的情况，但是需要实例化的OKHttpClient不同
-     * @param baseUrl
-     * @return
+     * @param baseUrl baseUrl
+     * @param logger  日志
+     * @throws Exception exception
+     * @return HttpClient
      */
     public static HttpClient initNewHttpClient(String baseUrl, boolean logger) throws Exception{
         if (!isHttpUrl(baseUrl)){
@@ -150,9 +153,9 @@ public class HttpManager {
     }
     /**
      * 根据新创建的newHttpClient创建服务
-     * @param clazz
-     * @param <T>
-     * @return
+     * @param clazz clazz
+     * @param <T> clazz
+     * @return clazz
      */
     public static <T> T  createNewWebService(Class<T> clazz) {
         if(newHttpClient==null){

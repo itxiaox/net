@@ -46,6 +46,7 @@ public class HttpsUtils {
      * 信任特定的证书，需要证书文件和密码
      * @param is "XXX.bks"文件(文件位置res/raw/XXX.bks) bks证书输入流
      * @param password  The certificate's password.
+     * @param alias  别名
      * @return SSLParams
      */
     public static SSLParams getSslSocketFactory(InputStream is ,String password, String alias) {
@@ -91,6 +92,7 @@ public class HttpsUtils {
 
     /**
      * 不做证书校验，信任所有证书
+     * @return SSLParams
      */
     public static SSLParams getSslSocketFactoryUnsafe() {
         SSLParams sslParams = new SSLParams();
@@ -115,6 +117,7 @@ public class HttpsUtils {
 
     /**
      * 主机名校验方法，请把”192.168.0.10”换成你们公司的主机IP：
+     * @return HostnameVerifier
      */
     public static HostnameVerifier getHostnameVerifier() {
         return (hostname, session) -> {
